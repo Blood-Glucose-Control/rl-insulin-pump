@@ -7,11 +7,14 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from stable_baselines3.common.monitor import Monitor
 from simglucose.analysis.risk import risk_index # type: ignore
 import torch
+from cmd_args import parse_args
 
+args_dict = parse_args()
 IS_TRAINING = True
 
+
 # Set a fixed seed
-seed = 42
+seed = args_dict['seed']
 np.random.seed(seed)
 
 if torch.cuda.is_available():
@@ -34,10 +37,10 @@ def custom_reward_fn(BG_last_hour):
 
 # Register the custom environment
 register(
-    id="simglucose/adolescent2-v0",
-    entry_point="simglucose.envs:T1DSimGymnaisumEnv",
-    max_episode_steps=1000,
-    kwargs={"patient_name": "adolescent#002", 'reward_fun': custom_reward_fn},
+    id=args_dict['env']['id'],
+    entry_point=args_dict['env']['entry_point'],
+    max_episode_steps=args_dict['env']['max_episode_steps'],
+    kwargs={"patient_name": args_dict['env']['patient_name'], 'reward_fun': custom_reward_fn},
 )
 
 def train():
