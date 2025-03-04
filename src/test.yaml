@@ -21,6 +21,6 @@ training:
 eval:
   eval_freq: 5000
   n_eval_episodes: 5
-device: "cpu"
-mode: "train"
+device: "mps"
+mode: "grid_search"
 # model_save_path: "ddpg_simglucose"
