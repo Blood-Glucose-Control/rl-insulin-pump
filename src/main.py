@@ -12,10 +12,33 @@ import logging
 from pathlib import Path
 from stable_baselines3.common.evaluation import evaluate_policy
 import matplotlib.pyplot as plt
+from gymnasium import Wrapper
+import os
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def get_default_patients():
+    """Return a list of default patient names.
+    """
+    patients = []
+    
+    # Add adolescent patients (typically 001-010)
+    for i in range(1, 11):
+        patients.append(f"adolescent#{i:03d}")
+    
+    # Add adult patients (typically 001-010)
+    for i in range(1, 11):
+        patients.append(f"adult#{i:03d}")
+    
+    # Add child patients (typically 001-010)
+    for i in range(1, 11):
+        patients.append(f"child#{i:03d}")
+    
+    logger.info(f"Using {len(patients)} default patients")
+    return patients
 
 
 def custom_reward_fn(BG_last_hour):
@@ -27,24 +50,96 @@ def custom_reward_fn(BG_last_hour):
     return risk_current - risk_prev
 
 
-def register_env(cfg):
-    """Register the custom environment with network configuration."""
-    kwargs = {
-        "patient_name": cfg['env']['patient_name'],
-        "reward_fun": custom_reward_fn
-    }
+class MultiPatientEnv(Wrapper):
+    """Environment wrapper that cycles through multiple patients."""
     
-    register(
-        id=cfg['env']['id'],
-        entry_point=cfg['env']['entry_point'],
-        max_episode_steps=cfg['env']['max_episode_steps'],
-        kwargs=kwargs
-    )
-
+    def __init__(self, patient_names, env_id, entry_point, max_episode_steps, reward_fun, seed=42, render_mode=None):
+        """Initialize with a list of patient names."""
+        self.patient_names = patient_names
+        self.current_patient_idx = 0
+        self.base_env_id = env_id
+        self.entry_point = entry_point
+        self.max_episode_steps = max_episode_steps
+        self.reward_fun = reward_fun
+        self.seed = seed
+        self._render_mode = render_mode 
+        
+        # Register and create the first environment
+        self._register_current_env()
+        env = gymnasium.make(self.current_env_id, render_mode=self._render_mode, seed=self.seed)
+        super().__init__(env)
+        
+        logger.info(f"Initialized MultiPatientEnv with {len(patient_names)} patients")
+    
+    def _register_current_env(self):
+        """Register the environment with the current patient."""
+        patient_name = self.patient_names[self.current_patient_idx]
+        
+        # Create a valid environment ID by replacing invalid characters
+        # Convert patient name to be part of a valid env ID
+        safe_patient_id = patient_name.replace('#', '_').replace('/', '_')
+        
+        # Parse the namespace and base name from the original ID
+        if '/' in self.base_env_id:
+            namespace, base_id = self.base_env_id.split('/')
+            # Extract the version from the base ID (assuming it ends with -vX)
+            if '-v' in base_id:
+                base_name, version = base_id.rsplit('-v', 1)
+                # Create a new valid ID
+                self.current_env_id = f"{namespace}/{base_name}-{safe_patient_id}-v{version}"
+            else:
+                # If no version, just append the patient ID
+                self.current_env_id = f"{namespace}/{base_id}-{safe_patient_id}"
+        else:
+            # No namespace, just base ID
+            if '-v' in self.base_env_id:
+                base_name, version = self.base_env_id.rsplit('-v', 1)
+                self.current_env_id = f"{base_name}-{safe_patient_id}-v{version}"
+            else:
+                self.current_env_id = f"{self.base_env_id}-{safe_patient_id}"
+        
+        kwargs = {
+            "patient_name": patient_name,
+            "reward_fun": self.reward_fun
+        }
+        
+        try:
+            register(
+                id=self.current_env_id,
+                entry_point=self.entry_point,
+                max_episode_steps=self.max_episode_steps,
+                kwargs=kwargs
+            )
+            logger.info(f"Registered environment for patient: {patient_name} with ID: {self.current_env_id}")
+        except gymnasium.error.Error:
+            # If already registered, just use it
+            logger.info(f"Using existing environment for patient: {patient_name} with ID: {self.current_env_id}")
 
 def make_env(cfg, render_mode=None):
     """Create and return a gym environment wrapped with Monitor."""
-    env = gymnasium.make(cfg['env']['id'], render_mode=render_mode, seed=cfg["seed"])
+    # First, register the base environment to ensure the namespace exists
+
+    # Handle patient selection
+    if cfg['env']['patient_name'] == 'all':
+        patient_names = get_default_patients()
+    elif isinstance(cfg['env']['patient_name'], list):
+        patient_names = cfg['env']['patient_name']
+    else:
+        # For single patient, create a list with just that patient
+        patient_names = [cfg['env']['patient_name']]
+    
+    # Create multi-patient environment (now works for both single and multiple patients)
+    env = MultiPatientEnv(
+        patient_names=patient_names,
+        env_id=cfg['env']['id'],
+        entry_point=cfg['env']['entry_point'],
+        max_episode_steps=cfg['env']['max_episode_steps'],
+        reward_fun=custom_reward_fn,
+        seed=cfg["seed"],
+        render_mode=render_mode
+    )
+    
+    # Add monitoring wrapper
     log_dir = Path(cfg.get("monitor_log_dir", "monitor_logs/"))
     log_dir.mkdir(parents=True, exist_ok=True)
     env = Monitor(env, filename=str(log_dir))
@@ -157,9 +252,6 @@ def create_network_config(n_layers, hidden_units):
 def evaluate_network(cfg, network_config):
     """Evaluate a specific network architecture."""
     logger.info(f"Evaluating network with {network_config['n_layers']} layers and {network_config['hidden_units']} units")
-    
-    # Register environment without network config
-    register_env(cfg)
     
     # Create environment
     env = make_env(cfg, render_mode=None)

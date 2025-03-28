@@ -1,8 +1,8 @@
 env: 
-  id: "simglucose/adolescent2-v0"
+  id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 1000
-  patient_name: "adolescent#002"
+  patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
 seed: 42
 action_noise: 
   mean: 0
@@ -22,5 +22,5 @@ eval:
   eval_freq: 5000
   n_eval_episodes: 5
 device: "mps"
-mode: "grid_search"
+mode: "train"
 # model_save_path: "ddpg_simglucose"
