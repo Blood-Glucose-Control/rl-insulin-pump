@@ -1,8 +1,8 @@
-import pytest
 import yaml
 from unittest import mock
 from tempfile import NamedTemporaryFile
 from src.cmd_args import parse_args
+
 
 def test_parse_args_valid_config():
     """Test with a valid config file."""
