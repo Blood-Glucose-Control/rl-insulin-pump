@@ -39,7 +39,6 @@ PyYAML==6.0.2
 requests==2.32.3
 scipy==1.15.1
 setuptools==75.8.0
--e git+https://github.com/Blood-Glucose-Control/rl-insulin-pump.git@f843f831a6706b8edcf72d2ce0ce855dd0b92cc8#egg=simglucose&subdirectory=simglucose
 six==1.17.0
 stable_baselines3==2.4.1
 sympy==1.13.1
