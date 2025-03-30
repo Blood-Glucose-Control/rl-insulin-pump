@@ -1,10 +1,10 @@
-env: 
+env:
   id: "simglucose/adolescent2-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 1000
   patient_name: "adolescent#002"
 seed: 42
-action_noise: 
+action_noise:
   mean: 0
   sigma: 0.25
 model:
