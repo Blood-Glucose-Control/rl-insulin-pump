@@ -21,6 +21,12 @@ training:
 eval:
   eval_freq: 5000
   n_eval_episodes: 5
-device: "mps"
-mode: "grid_search"
+predict:
+  save_path: "./results"
+  prefix: "adolescent#002"
+analyze:
+  files_path: "./results"
+  save_path: "./results"
+device: "cpu"
+mode: "analyze"
 # model_save_path: "ddpg_simglucose"

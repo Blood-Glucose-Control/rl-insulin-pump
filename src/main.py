@@ -1,5 +1,6 @@
 import gymnasium
 import numpy as np
+import pandas as pd
 import torch
 from gymnasium.envs.registration import register
 from stable_baselines3 import DDPG
@@ -12,6 +13,7 @@ import logging
 from pathlib import Path
 from stable_baselines3.common.evaluation import evaluate_policy
 import matplotlib.pyplot as plt
+from simglucose.analysis.report import report
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -131,9 +133,10 @@ def predict(cfg):
         return
 
     logger.info(f"Model loaded from '{cfg.get('model_save_path', 'ddpg_simglucose')}'.")
+    print(env.reset(seed=cfg['seed']))
     observation, info = env.reset(seed=cfg["seed"])
 
-    max_steps = cfg.get("predict_steps", 200)
+    max_steps = cfg.get("predict_steps", 20)
     for t in range(max_steps):
         env.render()
         action, _ = model.predict(observation)
@@ -144,6 +147,20 @@ def predict(cfg):
         if terminated or truncated:
             logger.info("Episode finished after {} timesteps".format(t + 1))
             break
+    history = env.show_history()
+    history.to_csv(f'{cfg['predict']['save_path']}/{cfg['predict']['prefix']}.csv')
+    # Close the environment
+    env.close()
+
+def analyze(cfg):
+    path = Path(__file__).parent
+    result_filenames = list(path.glob(
+    f'{cfg['analyze']['files_path']}/*.csv'))
+    patient_names = [f.stem for f in result_filenames]
+    df = pd.concat(
+            [pd.read_csv(str(f), index_col=0) for f in result_filenames],
+            keys=patient_names)
+    report(df, save_path=cfg['analyze']['save_path'])
 
 
 def create_network_config(n_layers, hidden_units):
@@ -304,8 +321,10 @@ def main():
         visualize_results(results)
         # Also print results to console
         plot_results(results)
+    elif mode == "analyze":
+        analyze(cfg)
     else:
-        logger.error(f"Unknown mode '{mode}'. Please choose 'train', 'predict', or 'grid_search'.")
+        logger.error(f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'report', or 'grid_search'.")
 
 
 if __name__ == "__main__":
