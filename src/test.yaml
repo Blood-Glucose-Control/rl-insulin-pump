@@ -13,7 +13,7 @@ model:
   batch_size: 256
   gamma: 0.99
 training:
-  total_timesteps: 200000
+  total_timesteps: 1000
   tensorboard_log: "./tb_logs/"
   save_path: "./checkpoints/"
   log_path: "./logs/"
@@ -28,5 +28,5 @@ analyze:
   files_path: "./results"
   save_path: "./results"
 device: "cpu"
-mode: "analyze"
+mode: "train"
 # model_save_path: "ddpg_simglucose"
