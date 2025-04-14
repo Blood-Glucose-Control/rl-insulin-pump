@@ -1,4 +1,4 @@
-env: 
+env:
   id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 1000
