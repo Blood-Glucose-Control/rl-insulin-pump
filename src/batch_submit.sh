@@ -24,7 +24,7 @@ while [[ "$#" -gt 0 ]]; do
       '--env') ENV="$2"; shift 2 ;;
       '--cpus') CPUS="$2"; shift 2 ;;
       '--gres') GRES="$2"; shift 2 ;;
-      *) CMD+=("$1"); shift ;;  
+      *) CMD+=("$1"); shift ;;
    esac
 done
 
@@ -80,7 +80,7 @@ if [[ -n "$ENV" ]]; then
    # Set up environment on watgpu.cs or in interactive session (use `source` keyword instead of `conda`)
    source activate "$ENV"
 fi
- 
+
 # Task to run
- 
+
 ${CMD[@]}

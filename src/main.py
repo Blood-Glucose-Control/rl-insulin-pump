@@ -376,8 +376,8 @@ def make_env(cfg, render_mode=None):
 def select_device(cfg):
     """Select device based on availability and configuration."""
     # Auto-detect if not provided in the config
-    if 'device' in cfg and cfg['device']:
-        device = cfg['device']
+    if "device" in cfg and cfg["device"]:
+        device = cfg["device"]
     else:
         if torch.cuda.is_available():
             device = "cuda"
@@ -387,19 +387,20 @@ def select_device(cfg):
             device = "cpu"
     logger.info(f"Using device: {device}")
     # Update the config so that downstream functions use the correct device
-    cfg['device'] = device
+    cfg["device"] = device
     return device
 
 
 def train(cfg):
     """Training routine for the DDPG agent."""
     logger.info("Starting training...")
-    env_config = cfg["env"]
     env = make_env(cfg, render_mode=None)
 
     n_actions = env.action_space.shape[-1]
     sigma = cfg["action_noise"]["sigma"]
-    action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=sigma * np.ones(n_actions))
+    action_noise = NormalActionNoise(
+        mean=np.zeros(n_actions), sigma=sigma * np.ones(n_actions)
+    )
 
     model_config = cfg["model"]
     model = DDPG(
@@ -427,7 +428,7 @@ def train(cfg):
     checkpoint_callback = CheckpointCallback(
         save_freq=cfg["training"]["checkpoint_freq"],
         save_path=cfg["training"]["save_path"],
-        name_prefix='ddpg_checkpoint',
+        name_prefix="ddpg_checkpoint",
     )
     
     # Add our custom patient switching callback
@@ -452,7 +453,9 @@ def predict(cfg):
     logger.info("Starting prediction...")
     env = make_env(cfg, render_mode="human")
     try:
-        model = DDPG.load(cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"])
+        model = DDPG.load(
+            cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
+        )
     except Exception as e:
         logger.error(f"Error loading model with model_save_path: {e}")
         return
@@ -618,9 +621,9 @@ def visualize_results(results, save_path="./results"):
 
 def main():
     # Parse configuration from YAML
-    cfg = parse_args()  
+    cfg = parse_args()
     # Set a fixed seed for reproducibility
-    np.random.seed(cfg['seed'])
+    np.random.seed(cfg["seed"])
 
     # Select device and update the configuration
     select_device(cfg)
