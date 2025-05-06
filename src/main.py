@@ -428,8 +428,8 @@ def select_device(cfg):
     cfg["device"] = device
     return device
 
+
 def make_model(cfg, env, network_config=None):
-    
     n_actions = env.action_space.shape[-1]
     sigma = cfg["action_noise"]["sigma"]
     action_noise = NormalActionNoise(
@@ -438,9 +438,11 @@ def make_model(cfg, env, network_config=None):
 
     model_config = cfg["model"]
 
-    policy_kwargs={
-                "net_arch": [network_config["hidden_units"]] * network_config["n_layers"]
-            } if network_config else None
+    policy_kwargs = (
+        {"net_arch": [network_config["hidden_units"]] * network_config["n_layers"]}
+        if network_config
+        else None
+    )
 
     match cfg["model_name"]:
         case "DDPG":
@@ -455,7 +457,7 @@ def make_model(cfg, env, network_config=None):
                 batch_size=model_config["batch_size"],
                 gamma=model_config["gamma"],
                 tensorboard_log=cfg["training"]["tensorboard_log"],
-                policy_kwargs=policy_kwargs
+                policy_kwargs=policy_kwargs,
             )
         case "PPO":
             return PPO(
@@ -469,24 +471,25 @@ def make_model(cfg, env, network_config=None):
                 batch_size=model_config["batch_size"],
                 gamma=model_config["gamma"],
                 tensorboard_log=cfg["training"]["tensorboard_log"],
-                policy_kwargs=policy_kwargs
+                policy_kwargs=policy_kwargs,
             )
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
-        
+
+
 def load_model(cfg):
-    match cfg['model_name']:
+    match cfg["model_name"]:
         case "DDPG":
             return DDPG.load(
-            cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
-        )
+                cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
+            )
         case "PPO":
             return PPO.load(
-            cfg.get("model_save_path", "ppo_simglucose"), device=cfg["device"]
-        )
+                cfg.get("model_save_path", "ppo_simglucose"), device=cfg["device"]
+            )
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
-            
+
 
 def train(cfg):
     """Training routine for the DDPG agent."""
@@ -581,13 +584,6 @@ def evaluate_network(cfg, network_config):
     # Create environment
     env = make_env(cfg, render_mode=None)
     eval_env = make_env(cfg, render_mode=None)
-
-    # Setup noise and model
-    n_actions = env.action_space.shape[-1]
-    action_noise = NormalActionNoise(
-        mean=np.zeros(n_actions),
-        sigma=cfg["action_noise"]["sigma"] * np.ones(n_actions),
-    )
 
     # Create model with custom network architecture
     model = make_model(cfg, env, network_config)
