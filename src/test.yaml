@@ -4,6 +4,7 @@ env:
   max_episode_steps: 1000
   patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
 seed: 42
+model_name: "DDPG"
 action_noise:
   mean: 0
   sigma: 0.25

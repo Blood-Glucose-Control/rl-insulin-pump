@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import torch
 from gymnasium.envs.registration import register
-from stable_baselines3 import DDPG
+from stable_baselines3 import DDPG, PPO
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.callbacks import (
     EvalCallback,
@@ -429,11 +429,7 @@ def select_device(cfg):
     return device
 
 
-def train(cfg):
-    """Training routine for the DDPG agent."""
-    logger.info("Starting training...")
-    env = make_env(cfg, render_mode=None)
-
+def make_model(cfg, env, network_config=None):
     n_actions = env.action_space.shape[-1]
     sigma = cfg["action_noise"]["sigma"]
     action_noise = NormalActionNoise(
@@ -441,18 +437,66 @@ def train(cfg):
     )
 
     model_config = cfg["model"]
-    model = DDPG(
-        "MlpPolicy",
-        env,
-        action_noise=action_noise,
-        verbose=1,
-        device=cfg["device"],
-        learning_rate=model_config["learning_rate"],
-        buffer_size=model_config["buffer_size"],
-        batch_size=model_config["batch_size"],
-        gamma=model_config["gamma"],
-        tensorboard_log=cfg["training"]["tensorboard_log"],
+
+    policy_kwargs = (
+        {"net_arch": [network_config["hidden_units"]] * network_config["n_layers"]}
+        if network_config
+        else None
     )
+
+    match cfg["model_name"]:
+        case "DDPG":
+            return DDPG(
+                "MlpPolicy",
+                env,
+                action_noise=action_noise,
+                verbose=1,
+                device=cfg["device"],
+                learning_rate=model_config["learning_rate"],
+                buffer_size=model_config["buffer_size"],
+                batch_size=model_config["batch_size"],
+                gamma=model_config["gamma"],
+                tensorboard_log=cfg["training"]["tensorboard_log"],
+                policy_kwargs=policy_kwargs,
+            )
+        case "PPO":
+            return PPO(
+                "MlpPolicy",
+                env,
+                action_noise=action_noise,
+                verbose=1,
+                device=cfg["device"],
+                learning_rate=model_config["learning_rate"],
+                buffer_size=model_config["buffer_size"],
+                batch_size=model_config["batch_size"],
+                gamma=model_config["gamma"],
+                tensorboard_log=cfg["training"]["tensorboard_log"],
+                policy_kwargs=policy_kwargs,
+            )
+        case _:
+            raise ValueError(f"Unknown model name: {cfg['model_name']}")
+
+
+def load_model(cfg):
+    match cfg["model_name"]:
+        case "DDPG":
+            return DDPG.load(
+                cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
+            )
+        case "PPO":
+            return PPO.load(
+                cfg.get("model_save_path", "ppo_simglucose"), device=cfg["device"]
+            )
+        case _:
+            raise ValueError(f"Unknown model name: {cfg['model_name']}")
+
+
+def train(cfg):
+    """Training routine for the DDPG agent."""
+    logger.info("Starting training...")
+    env = make_env(cfg, render_mode=None)
+
+    model = make_model(cfg, env)
 
     # Set up evaluation and checkpoint callbacks
     eval_env = make_env(cfg, render_mode=None)
@@ -491,9 +535,7 @@ def predict(cfg):
     logger.info("Starting prediction...")
     env = make_env(cfg, render_mode="human")
     try:
-        model = DDPG.load(
-            cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
-        )
+        model = load_model(cfg)
     except Exception as e:
         logger.error(f"Error loading model with model_save_path: {e}")
         return
@@ -543,26 +585,8 @@ def evaluate_network(cfg, network_config):
     env = make_env(cfg, render_mode=None)
     eval_env = make_env(cfg, render_mode=None)
 
-    # Setup noise and model
-    n_actions = env.action_space.shape[-1]
-    action_noise = NormalActionNoise(
-        mean=np.zeros(n_actions),
-        sigma=cfg["action_noise"]["sigma"] * np.ones(n_actions),
-    )
-
     # Create model with custom network architecture
-    model_kwargs = cfg["model"].copy()  # Create a copy of model config
-    model = DDPG(
-        "MlpPolicy",
-        env,
-        action_noise=action_noise,
-        verbose=1,
-        device=cfg["device"],
-        policy_kwargs={
-            "net_arch": [network_config["hidden_units"]] * network_config["n_layers"]
-        },
-        **model_kwargs,
-    )
+    model = make_model(cfg, env, network_config)
 
     # Train and evaluate
     mean_reward, std_reward = evaluate_policy(
