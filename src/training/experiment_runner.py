@@ -1,0 +1,93 @@
+import logging
+import pandas as pd
+from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
+from src.training.callbacks.patient_switch import PatientSwitchCallback
+from src.environments.env_loader import make_env
+from src.agents.agent_loader import make_model, load_model
+from simglucose.analysis.report import report
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class ExperimentRunner:
+    def __init__(self, cfg):
+        self.cfg = cfg
+        self.env = make_env(cfg, render_mode=None)
+        self.eval_env = make_env(cfg, render_mode=None)
+        self.model = make_model(cfg, self.env)
+
+    def get_callbacks(self):
+        callbacks = []
+
+        # Evaluation callback
+        callbacks.append(EvalCallback(
+            self.eval_env,
+            best_model_save_path=self.cfg["training"]["log_path"],
+            log_path=self.cfg["training"]["log_path"],
+            eval_freq=self.cfg["eval"]["eval_freq"],
+            n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
+        ))
+
+        # Checkpoint callback
+        callbacks.append(CheckpointCallback(
+            save_freq=self.cfg["training"]["checkpoint_freq"],
+            save_path=self.cfg["training"]["save_path"],
+            name_prefix="ddpg_checkpoint",
+        ))
+
+        # Patient switch callback
+        switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
+        callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
+
+        return callbacks
+
+    def train(self):
+        logger.info("Starting training...")
+        self.model.learn(
+            total_timesteps=self.cfg["training"]["total_timesteps"],
+            callback=self.get_callbacks(),
+        )
+        model_path = self.cfg.get("model_save_path", "ddpg_simglucose")
+        self.model.save(model_path)
+        logger.info(f"Model saved as '{model_path}'.")
+
+    def predict(self):
+        logger.info("Starting prediction...")
+        env = make_env(self.cfg, render_mode="human")
+
+        try:
+            model = load_model(self.cfg)
+        except Exception as e:
+            logger.error(f"Error loading model with model_save_path: {e}")
+            return
+
+        logger.info(f"Model loaded from '{self.cfg.get('model_save_path', 'ddpg_simglucose')}'.")
+
+        observation, info = env.reset(seed=self.cfg["seed"])
+        max_steps = self.cfg.get("predict_steps", 20)
+
+        for t in range(max_steps):
+            env.render()
+            action, _ = model.predict(observation)
+            observation, reward, terminated, truncated, info = env.step(action)
+            logger.info(f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}")
+            if terminated or truncated:
+                logger.info("Episode finished after {} timesteps".format(t + 1))
+                break
+
+        history = env.show_history()
+        history.to_csv(f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['prefix']}.csv")
+        env.close()
+
+    def analyze(self):
+        logger.info("Analyzing saved trajectories...")
+        from pathlib import Path
+        path = Path(__file__).parent
+        result_filenames = list(path.glob(f"{self.cfg['analyze']['files_path']}/*.csv"))
+        patient_names = [f.stem for f in result_filenames]
+        df = pd.concat(
+            [pd.read_csv(str(f), index_col=0) for f in result_filenames],
+            keys=patient_names
+        )
+        report(df, save_path=self.cfg["analyze"]["save_path"])

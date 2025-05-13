@@ -1,7 +1,7 @@
 import yaml
 from unittest import mock
 from tempfile import NamedTemporaryFile
-from src.cmd_args import parse_args
+from src.utils.cmd_args import parse_args
 
 
 def test_parse_args_valid_config():
