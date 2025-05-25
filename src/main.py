@@ -129,28 +129,13 @@ class MultiPatientEnv(Wrapper):
         # For example: "adolescent#001" -> "adolescent_001"
         safe_patient_id = patient_name.replace("#", "_").replace("/", "_")
 
-        # Parse the base ID into components (handling namespaces and versions correctly)
-        # This ensures we create valid Gymnasium IDs like "simglucose/base-adolescent_001-v0"
-        if "/" in self.base_env_id:
-            # Handle namespace/id format (e.g., "simglucose/something-v0")
-            namespace, base_id = self.base_env_id.split("/")
-            # Extract the version from the base ID
-            if "-v" in base_id:
-                base_name, version = base_id.rsplit("-v", 1)
-                # Create a new valid ID with namespace
-                self.current_env_id = (
-                    f"{namespace}/{base_name}-{safe_patient_id}-v{version}"
-                )
-            else:
-                # If no version, just append the patient ID
-                self.current_env_id = f"{namespace}/{base_id}-{safe_patient_id}"
-        else:
-            # Handle IDs without namespace
-            if "-v" in self.base_env_id:
-                base_name, version = self.base_env_id.rsplit("-v", 1)
-                self.current_env_id = f"{base_name}-{safe_patient_id}-v{version}"
-            else:
-                self.current_env_id = f"{self.base_env_id}-{safe_patient_id}"
+        # The only requirement for Gymnasium environment IDs is global uniqueness.
+        # We control the format of `base_env_id` via the config, so no complex parsing is needed.
+        # By appending a sanitized `safe_patient_id` to the `base_env_id`, we ensure each environment
+        # has a unique, predictable ID for Gym registration (e.g., "simglucose/multi-patient-v0-adolescent_001").
+        # This simple pattern meets Gym's requirements while keeping the code clean.
+
+        self.current_env_id = f"{self.base_env_id}-{safe_patient_id}"
 
         # Set up the environment-specific parameters
         kwargs = {
