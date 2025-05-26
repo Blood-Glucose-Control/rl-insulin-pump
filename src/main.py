@@ -12,37 +12,17 @@ from stable_baselines3.common.callbacks import (
 )
 from stable_baselines3.common.monitor import Monitor
 from simglucose.analysis.risk import risk_index  # type: ignore
-from cmd_args import parse_args
+from src.cmd_args import parse_args
 import logging
 from pathlib import Path
 from stable_baselines3.common.evaluation import evaluate_policy
 import matplotlib.pyplot as plt
 from gymnasium import Wrapper
 from simglucose.analysis.report import report
-
+from src.environment.patient import get_default_patients
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-
-def get_default_patients():
-    """Return a list of default patient names."""
-    patients = []
-
-    # Add adolescent patients (typically 001-010)
-    for i in range(1, 11):
-        patients.append(f"adolescent#{i:03d}")
-
-    # Add adult patients (typically 001-010)
-    for i in range(1, 11):
-        patients.append(f"adult#{i:03d}")
-
-    # Add child patients (typically 001-010)
-    for i in range(1, 11):
-        patients.append(f"child#{i:03d}")
-
-    logger.info(f"Using {len(patients)} default patients")
-    return patients
 
 
 def custom_reward_fn(BG_last_hour):
