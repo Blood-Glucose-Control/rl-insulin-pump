@@ -47,18 +47,18 @@ def main():
     runner = ExperimentRunner(cfg)
 
     if mode == "train":
-        runner.train(cfg)
+        runner.train()
     elif mode == "predict":
-        runner.predict(cfg)
+        runner.predict()
     elif mode == "grid_search":
         # Run grid search over network configurations
-        results = grid_search(cfg)
+        results = grid_search()
         # Visualize and save results
         visualize_results(results)
         # Also print results to console
         plot_results(results)
     elif mode == "analyze":
-        runner.analyze(cfg)
+        runner.analyze()
     else:
         logger.error(
             f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'report', or 'grid_search'."

@@ -31,7 +31,7 @@ Creating RL Agents for simglucose/PadovaT1D simulator.
 
 4. Run scripts from root dir
 	``` bash
-	python -m src.main
+	python -m src.main --cfg=<path to config file>
 	```
 
 ### Run Tests
@@ -59,10 +59,10 @@ pre-commit run --all-files
 ├── configs/                          # Training and evaluation configuration YAMLs
 ├── experiments/                      # Scripts and setups for running controlled experiments
 ├── results/                          # Output from experiments: plots, logs, metrics, etc.
-├── scripts/                          # Shell scripts for launching jobs (e.g. on WatGPU)
+├── scripts/                          # Bash scripts for launching jobs (e.g. on WatGPU)
 ├── simglucose/                       # Custom fork of simglucose package
-├── src/                              # Main RL framework package
-│   ├── agents/                       # Code for creating, loading, and managing agents
+├── src/
+│   ├── agents/                       # Creating, loading, and managing agents
 │   ├── environments/				  # Custom Gym environments and reward functions
 │   ├── training/                     # Orchestration of training, prediction, and evaluation
 │   ├── utils/                        # Generic helper utilities
