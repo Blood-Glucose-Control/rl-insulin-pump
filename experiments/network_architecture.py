@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def create_network_config(n_layers, hidden_units):
     return {"n_layers": n_layers, "hidden_units": hidden_units, "activation_fn": "relu"}
 

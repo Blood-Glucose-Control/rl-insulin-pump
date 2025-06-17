@@ -10,6 +10,7 @@ from simglucose.analysis.report import report
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class ExperimentRunner:
     def __init__(self, cfg):
         self.cfg = cfg
@@ -21,20 +22,24 @@ class ExperimentRunner:
         callbacks = []
 
         # Evaluation callback
-        callbacks.append(EvalCallback(
-            self.eval_env,
-            best_model_save_path=self.cfg["training"]["log_path"],
-            log_path=self.cfg["training"]["log_path"],
-            eval_freq=self.cfg["eval"]["eval_freq"],
-            n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
-        ))
+        callbacks.append(
+            EvalCallback(
+                self.eval_env,
+                best_model_save_path=self.cfg["training"]["log_path"],
+                log_path=self.cfg["training"]["log_path"],
+                eval_freq=self.cfg["eval"]["eval_freq"],
+                n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
+            )
+        )
 
         # Checkpoint callback
-        callbacks.append(CheckpointCallback(
-            save_freq=self.cfg["training"]["checkpoint_freq"],
-            save_path=self.cfg["training"]["save_path"],
-            name_prefix="ddpg_checkpoint",
-        ))
+        callbacks.append(
+            CheckpointCallback(
+                save_freq=self.cfg["training"]["checkpoint_freq"],
+                save_path=self.cfg["training"]["save_path"],
+                name_prefix="ddpg_checkpoint",
+            )
+        )
 
         # Patient switch callback
         switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
@@ -62,7 +67,9 @@ class ExperimentRunner:
             logger.error(f"Error loading model with model_save_path: {e}")
             return
 
-        logger.info(f"Model loaded from '{self.cfg.get('model_save_path', 'ddpg_simglucose')}'.")
+        logger.info(
+            f"Model loaded from '{self.cfg.get('model_save_path', 'ddpg_simglucose')}'."
+        )
 
         observation, info = env.reset(seed=self.cfg["seed"])
         max_steps = self.cfg.get("predict_steps", 20)
@@ -71,23 +78,28 @@ class ExperimentRunner:
             env.render()
             action, _ = model.predict(observation)
             observation, reward, terminated, truncated, info = env.step(action)
-            logger.info(f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}")
+            logger.info(
+                f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}"
+            )
             if terminated or truncated:
                 logger.info("Episode finished after {} timesteps".format(t + 1))
                 break
 
         history = env.show_history()
-        history.to_csv(f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['prefix']}.csv")
+        history.to_csv(
+            f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['prefix']}.csv"
+        )
         env.close()
 
     def analyze(self):
         logger.info("Analyzing saved trajectories...")
         from pathlib import Path
+
         path = Path(__file__).parent
         result_filenames = list(path.glob(f"{self.cfg['analyze']['files_path']}/*.csv"))
         patient_names = [f.stem for f in result_filenames]
         df = pd.concat(
             [pd.read_csv(str(f), index_col=0) for f in result_filenames],
-            keys=patient_names
+            keys=patient_names,
         )
         report(df, save_path=self.cfg["analyze"]["save_path"])

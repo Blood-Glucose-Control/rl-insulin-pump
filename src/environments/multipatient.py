@@ -7,6 +7,7 @@ from gymnasium import Wrapper
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class MultiPatientEnv(Wrapper):
     """Environment wrapper that cycles through multiple patients.
 
@@ -216,4 +217,3 @@ class MultiPatientEnv(Wrapper):
 
         # Reset the new environment and return initial observation
         return self.env.reset(**kwargs)
-

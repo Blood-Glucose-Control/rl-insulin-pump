@@ -7,6 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def make_model(cfg, env, network_config=None):
     n_actions = env.action_space.shape[-1]
     sigma = cfg["action_noise"]["sigma"]
@@ -21,7 +22,7 @@ def make_model(cfg, env, network_config=None):
         if network_config
         else None
     )
-    
+
     model_kwargs = {
         "policy": "MlpPolicy",
         "env": env,
@@ -57,4 +58,3 @@ def load_model(cfg):
             )
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
-

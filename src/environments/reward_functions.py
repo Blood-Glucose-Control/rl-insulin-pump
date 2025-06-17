@@ -1,5 +1,6 @@
 from simglucose.analysis.risk import risk_index  # type: ignore
 
+
 def custom_reward_fn(BG_last_hour):
     """Calculate the reward based on the risk index difference."""
     if len(BG_last_hour) < 2:

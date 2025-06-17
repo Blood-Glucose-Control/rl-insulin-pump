@@ -7,6 +7,7 @@ from stable_baselines3.common.callbacks import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class PatientSwitchCallback(BaseCallback):
     """Custom callback to ensure we cycle through all patients during training.
 
