@@ -17,15 +17,31 @@ logger = logging.getLogger(__name__)
 def select_device(cfg):
     """Select device based on availability and configuration."""
     # Auto-detect if not provided in the config
-    if "device" in cfg and cfg["device"]:
-        device = cfg["device"]
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif "device" in cfg and cfg["device"]:
+        match device:
+            case "cuda":
+                if torch.cuda.is_available():
+                    device = "cuda"
+                else:
+                    logger.warning("CUDA not available, falling back to CPU.")
+                    device = "cpu"
+            case "mps":
+                if torch.backends.mps.is_available():
+                    device = "mps"
+                else:
+                    logger.warning("MPS not available, falling back to CPU.")
+                    device = "cpu"
+            case "cpu":
+                device = "cpu"
+            case _:
+                logger.error(
+                    f"Unknown device '{cfg['device']}'. Falling back to CPU."
+                )
+                device = "cpu"
     else:
-        if torch.cuda.is_available():
-            device = "cuda"
-        elif torch.backends.mps.is_available():
-            device = "mps"
-        else:
-            device = "cpu"
+        device = "cpu"
     logger.info(f"Using device: {device}")
     # Update the config so that downstream functions use the correct device
     cfg["device"] = device

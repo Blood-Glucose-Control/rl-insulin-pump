@@ -87,7 +87,7 @@ class ExperimentRunner:
 
         history = env.show_history()
         history.to_csv(
-            f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['prefix']}.csv"
+            f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['filename']}.csv"
         )
         env.close()
 
