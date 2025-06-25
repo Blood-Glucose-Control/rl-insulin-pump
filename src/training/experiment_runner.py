@@ -4,7 +4,7 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
-from simglucose.analysis.report import report
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -87,15 +87,3 @@ class ExperimentRunner:
         )
         env.close()
 
-    def analyze(self):
-        logger.info("Analyzing saved trajectories...")
-        from pathlib import Path
-
-        path = Path(__file__).parent
-        result_filenames = list(path.glob(f"{self.cfg['analyze']['files_path']}/*.csv"))
-        patient_names = [f.stem for f in result_filenames]
-        df = pd.concat(
-            [pd.read_csv(str(f), index_col=0) for f in result_filenames],
-            keys=patient_names,
-        )
-        report(df, save_path=self.cfg["analyze"]["save_path"])
