@@ -12,6 +12,7 @@ MEM=""
 ENV=""
 CPUS=""
 GRES=""
+USRGRP=""
 CMD=()
 
 while [[ "$#" -gt 0 ]]; do
@@ -24,6 +25,7 @@ while [[ "$#" -gt 0 ]]; do
       '--env') ENV="$2"; shift 2 ;;
       '--cpus') CPUS="$2"; shift 2 ;;
       '--gres') GRES="$2"; shift 2 ;;
+      '--partition') USRGRP="$2"; shift 2 ;;
       *) CMD+=("$1"); shift ;;
    esac
 done
@@ -37,7 +39,17 @@ echo "MEM: $MEM"
 echo "ENV_VARS: $ENV_VARS"
 echo "CPUS: $CPUS"
 echo "GRES: $GRES"
+echo "USRGRP: $USRGRP"
 echo "COMMAND: ${CMD[*]}"
+
+# Set output file destinations (optional)
+# By default, output will appear in a file in the submission directory:
+# slurm-$job_number.out
+# This can be changed:
+if [[ -n "$OUT" ]]; then
+   echo "setting output file to $OUT"
+   #SBATCH -o "$OUT" # File to which STDOUT will be written
+fi
 
 # Ensure a command was provided
 if [[ ${#CMD[@]} -eq 0 ]]; then
@@ -51,15 +63,9 @@ fi
 #SBATCH --mem="$MEM"
 #SBATCH --cpus-per-task="$CPUS"
 #SBATCH --gres="$GRES"
+#SBATCH --partition="$USRGRP"
 
-# Set output file destinations (optional)
-# By default, output will appear in a file in the submission directory:
-# slurm-$job_number.out
-# This can be changed:
-if [[ -n "$OUT" ]]; then
-   echo "setting output file to $OUT"
-   #SBATCH -o "$OUT" # File to which STDOUT will be written
-fi
+
 if [[ -n "$ERR" ]]; then
    echo "setting error file to $ERR"
    #SBATCH -e "$ERR" # File to which STDERR will be written
@@ -83,4 +89,4 @@ fi
 
 # Task to run
 
-${CMD[@]}
+sbatch  ${CMD[@]}
