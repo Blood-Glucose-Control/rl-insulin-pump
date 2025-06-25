@@ -20,7 +20,7 @@ def select_device(cfg):
     if torch.cuda.is_available():
         device = "cuda"
     elif "device" in cfg and cfg["device"]:
-        match device:
+        match cfg["device"]:
             case "cuda":
                 if torch.cuda.is_available():
                     device = "cuda"

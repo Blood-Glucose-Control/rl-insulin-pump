@@ -20,7 +20,7 @@ class ExperimentRunner:
 
         self.callbacks = [callbacks] if callbacks else []
         # Evaluation callback
-        callbacks.append(
+        self.callbacks.append(
             EvalCallback(
                 self.eval_env,
                 best_model_save_path=self.cfg["training"]["log_path"],
@@ -31,7 +31,7 @@ class ExperimentRunner:
         )
 
         # Checkpoint callback
-        callbacks.append(
+        self.callbacks.append(
             CheckpointCallback(
                 save_freq=self.cfg["training"]["checkpoint_freq"],
                 save_path=self.cfg["training"]["save_path"],
@@ -41,7 +41,7 @@ class ExperimentRunner:
 
         # Patient switch callback
         switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
-        callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
+        self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
     def train(self):
         logger.info("Starting training...")
