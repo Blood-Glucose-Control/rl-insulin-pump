@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from experiments.network_architecture import (
+from scripts.experiments.network_architecture import (
     grid_search,
     plot_results,
     visualize_results,
