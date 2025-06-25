@@ -77,7 +77,7 @@ def main():
         runner.analyze()
     else:
         logger.error(
-            f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'report', or 'grid_search'."
+            f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."
         )
 
 

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_default_patients():
-    """Return a list of default patient names."""
+    """Return a list of default patient names that are referenced from [simglucose](https://github.com/Blood-Glucose-Control/rl-insulin-pump/blob/main/simglucose/simglucose/params/vpatient_params.csv)."""
     patients = []
 
     # Add adolescent patients (typically 001-010)

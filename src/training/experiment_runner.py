@@ -12,15 +12,13 @@ logger = logging.getLogger(__name__)
 
 
 class ExperimentRunner:
-    def __init__(self, cfg):
+    def __init__(self, cfg, callbacks=None):
         self.cfg = cfg
         self.env = make_env(cfg, render_mode=None)
         self.eval_env = make_env(cfg, render_mode=None)
         self.model = make_model(cfg, self.env)
 
-    def get_callbacks(self):
-        callbacks = []
-
+        self.callbacks = [callbacks] if callbacks else []
         # Evaluation callback
         callbacks.append(
             EvalCallback(
@@ -45,13 +43,11 @@ class ExperimentRunner:
         switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
         callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
-        return callbacks
-
     def train(self):
         logger.info("Starting training...")
         self.model.learn(
             total_timesteps=self.cfg["training"]["total_timesteps"],
-            callback=self.get_callbacks(),
+            callback=self.callbacks,
         )
         model_path = self.cfg.get("model_save_path", "ddpg_simglucose")
         self.model.save(model_path)

@@ -57,9 +57,10 @@ pre-commit run --all-files
 .
 ├── .github/                          # GitHub workflows for CI/CD tests
 ├── configs/                          # Training and evaluation configuration YAMLs
-├── experiments/                      # Scripts and setups for running controlled experiments
 ├── results/                          # Output from experiments: plots, logs, metrics, etc.
-├── scripts/                          # Bash scripts for launching jobs (e.g. on WatGPU)
+├── scripts/                          # Bash scripts for launching jobs, one-off experiments, etc.
+│   ├── experiments/                  # Scripts and setups for running controlled experiments
+│   └── watgpu/                       # WatGPU bash scripts
 ├── simglucose/                       # Custom fork of simglucose package
 ├── src/
 │   ├── agents/                       # Creating, loading, and managing agents
