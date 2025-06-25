@@ -36,9 +36,7 @@ def select_device(cfg):
             case "cpu":
                 device = "cpu"
             case _:
-                logger.error(
-                    f"Unknown device '{cfg['device']}'. Falling back to CPU."
-                )
+                logger.error(f"Unknown device '{cfg['device']}'. Falling back to CPU.")
                 device = "cpu"
     else:
         device = "cpu"
