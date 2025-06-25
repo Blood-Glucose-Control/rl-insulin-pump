@@ -12,6 +12,7 @@ MEM=""
 ENV=""
 CPUS=""
 GRES=""
+USRGRP=""
 CMD=()
 
 while [[ "$#" -gt 0 ]]; do
@@ -24,6 +25,7 @@ while [[ "$#" -gt 0 ]]; do
       '--env') ENV="$2"; shift 2 ;;
       '--cpus') CPUS="$2"; shift 2 ;;
       '--gres') GRES="$2"; shift 2 ;;
+      '--partition') USRGRP="$2"; shift 2 ;;
       *) CMD+=("$1"); shift ;;
    esac
 done
@@ -37,6 +39,7 @@ echo "MEM: $MEM"
 echo "ENV_VARS: $ENV_VARS"
 echo "CPUS: $CPUS"
 echo "GRES: $GRES"
+echo "USRGRP: $USRGRP"
 echo "COMMAND: ${CMD[*]}"
 
 # Ensure a command was provided
@@ -51,6 +54,7 @@ fi
 #SBATCH --mem="$MEM"
 #SBATCH --cpus-per-task="$CPUS"
 #SBATCH --gres="$GRES"
+#SBATCH --partition="$USRGRP"
 
 # Set output file destinations (optional)
 # By default, output will appear in a file in the submission directory:
