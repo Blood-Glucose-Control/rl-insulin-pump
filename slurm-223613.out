@@ -1,0 +1,16 @@
+OUT: init_test_results.txt
+ERR: error.txt
+EMAIL: cjrisi@uwaterloo.ca
+TIME: 00:05:00
+MEM: 4GB
+ENV_VARS: 
+CPUS: 1
+GRES: GPU:1
+COMMAND: python src/main.py
+setting output file to init_test_results.txt
+setting error file to error.txt
+setting notification email address to cjrisi@uwaterloo.ca
+Traceback (most recent call last):
+  File "/u6/cjrisi/rl-insulin-pump/src/main.py", line 1, in <module>
+    import gymnasium
+ModuleNotFoundError: No module named 'gymnasium'
