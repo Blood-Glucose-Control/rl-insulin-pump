@@ -1,5 +1,4 @@
 import logging
-import pandas as pd
 from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
@@ -86,4 +85,3 @@ class ExperimentRunner:
             f"{self.cfg['predict']['save_path']}/{self.cfg['predict']['filename']}.csv"
         )
         env.close()
-
