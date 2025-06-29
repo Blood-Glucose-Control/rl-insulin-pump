@@ -13,14 +13,16 @@ def temp_data_dir():
     temp_dir = Path(tempfile.mkdtemp())
 
     for patient_id in ["patient1", "patient2"]:
-        df = pd.DataFrame({
-            "Time": [1, 2, 3, 4],
-            "BG": [120, 140, 160, 130],
-            "CGM": [118, 138, 158, 128],
-            "CHO": [0, 15, 0, 0],
-            "insulin": [0, 2, 0, 0],
-            "basal": [0.5, 0.5, 0.5, 0.5],
-        })
+        df = pd.DataFrame(
+            {
+                "Time": [1, 2, 3, 4],
+                "BG": [120, 140, 160, 130],
+                "CGM": [118, 138, 158, 128],
+                "CHO": [0, 15, 0, 0],
+                "insulin": [0, 2, 0, 0],
+                "basal": [0.5, 0.5, 0.5, 0.5],
+            }
+        )
         df.index = pd.date_range(start="2023-01-01", periods=4, freq="30min")
         df.to_csv(temp_dir / f"{patient_id}.csv")
     yield temp_dir
