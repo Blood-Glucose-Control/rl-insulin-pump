@@ -9,6 +9,8 @@ from src.training.experiment_runner import ExperimentRunner
 from src.utils.cmd_args import parse_args
 import logging
 
+from src.utils.reporting import sg_analyze
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -72,7 +74,7 @@ def main():
         # Also print results to console
         plot_results(results)
     elif mode == "analyze":
-        runner.analyze()
+        sg_analyze(cfg.get("files_path", None), cfg.get("save_path", None))
     else:
         logger.error(
             f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."

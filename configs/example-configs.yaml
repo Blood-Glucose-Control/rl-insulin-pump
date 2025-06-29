@@ -26,7 +26,6 @@ predict:
   save_path: "./results"
   prefix: "adolescent#002"
 analyze:
-  files_path: "./results"
-  save_path: "./results"
+  save_path: "./results/simglucose_resports_report_20250629"
 device: "cpu"
-mode: "train"
+mode: "analyze"
