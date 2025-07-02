@@ -41,10 +41,10 @@ scipy==1.15.1
 setuptools==75.8.0
 six==1.17.0
 stable_baselines3==2.4.1
-sympy==1.13.1
+sympy
 tensorboard==2.18.0
 tensorboard-data-server==0.7.2
-torch==2.5.1
+torch>=2.7.1-rc1
 typing_extensions==4.12.2
 tzdata==2024.2
 urllib3==2.3.0

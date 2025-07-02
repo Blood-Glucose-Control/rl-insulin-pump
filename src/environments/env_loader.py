@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 
 from src.environments.multipatient import MultiPatientEnv
-from src.environments.reward_functions import custom_reward_fn
+from src.environments.reward_functions import risk_diff_reward_fn
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -64,7 +64,7 @@ def make_env(cfg, render_mode=None):
         env_id=cfg["env"]["id"],
         entry_point=cfg["env"]["entry_point"],
         max_episode_steps=cfg["env"]["max_episode_steps"],
-        reward_fun=custom_reward_fn,
+        reward_fun=risk_diff_reward_fn,
         seed=cfg["seed"],
         render_mode=render_mode,
     )

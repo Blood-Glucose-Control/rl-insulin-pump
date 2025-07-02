@@ -9,6 +9,7 @@ fonttools>=4.42.0
 gym==0.9.4
 gymnasium~=0.29.1
 idna>=3.4
+ipykernel
 iniconfig>=2.0.0
 kiwisolver>=1.4.4
 matplotlib>=3.7.2
@@ -32,3 +33,11 @@ six>=1.16.0
 typing_extensions>=4.7.1
 tzdata>=2023.3
 urllib3>=2.0.4
+pandas
+numpy
+matplotlib
+seaborn
+scipy
+copulas
+scikit-learn
+nbformat>=4.2.0 

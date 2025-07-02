@@ -177,3 +177,6 @@ checkpoints/
 logs/
 monitor_logs/
 tb_logs/
+
+# Slurm job files
+slurm-*.out
