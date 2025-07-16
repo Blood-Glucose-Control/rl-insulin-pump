@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # To be submitted to the SLURM queue with the command:
-# sbatch batch-submit.sh
+# batch_submit.sh out="results/output.txt" err="results/error.txt" email="cjrisi@uwaterloo.ca" time="00:15:00" mem="4G" env="env" cpus=2 gres="gpu:1" partition="HI" main.py -config "/u6/cjrisi/rl-insulin-pump/configs/watgpu-partition_test-configs.yaml"
 
 # Initialize variables
 OUT=""
@@ -81,10 +81,10 @@ if [[ -n "$EMAIL" ]]; then
 fi
 
 if [[ -n "$ENV" ]]; then
-   echo "loading conda environment $ENV"
+   echo "loading venv environment $ENV"
    # Load up your conda environment
    # Set up environment on watgpu.cs or in interactive session (use `source` keyword instead of `conda`)
-   source activate "$ENV"
+   source $ENV/bin/activate
 fi
 
 # Task to run

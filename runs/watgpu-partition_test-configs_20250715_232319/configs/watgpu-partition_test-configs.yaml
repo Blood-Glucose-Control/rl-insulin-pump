@@ -1,0 +1,32 @@
+action_noise:
+  mean: 0
+  sigma: 0.25
+analyze:
+  files_path: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/results/
+  save_path: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/results/
+device: gpu
+env:
+  entry_point: simglucose.envs:T1DSimGymnaisumEnv
+  id: simglucose/multi-patient-v0
+  max_episode_steps: 1000
+  patient_name: all
+eval:
+  eval_freq: 5000
+  n_eval_episodes: 5
+mode: train
+model:
+  batch_size: 256
+  buffer_size: 100000
+  gamma: 0.99
+  learning_rate: 0.001
+  tensorboard_log: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/tensorboard/
+model_name: DDPG
+predict:
+  prefix: adolescent#002
+  save_path: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/results/
+seed: 42
+training:
+  checkpoint_freq: 10000
+  log_path: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/logs/
+  save_path: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250715_232319/checkpoints/
+  total_timesteps: 1000

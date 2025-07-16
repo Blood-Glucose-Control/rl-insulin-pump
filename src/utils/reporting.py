@@ -74,6 +74,9 @@ def sg_analyze(files_path=None, save_path=None):
         save_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Generate the report
+    print(str(save_path))
+    print(df)
+    print(df.value_counts())
     report(df, save_path=str(save_path))
     logger.info(f"Report saved to {save_path}")
 

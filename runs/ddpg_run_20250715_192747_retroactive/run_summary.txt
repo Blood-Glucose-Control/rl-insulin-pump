@@ -1,0 +1,29 @@
+Retroactively Organized Training Run: ddpg_run_20250715_192747_retroactive
+Organized: Tue Jul 15 07:27:47 PM UTC 2025
+Original SLURM output: slurm-1335771.out
+
+This directory contains files from a DDPG training run that was executed
+using the watgpu-partition_test-configs.yaml configuration.
+
+From the SLURM output analysis:
+- Training used CPU device (GPU was requested but fell back to CPU)
+- Trained on 30 patients (adolescent, adult, child populations)
+- Used DDPG algorithm with action noise (mean=0, sigma=0.25)
+- Training completed 1000 timesteps across multiple patients
+- Patient switching callback forced switches every 100 steps
+
+Directory Structure:
+- configs/: Original configuration file
+- checkpoints/: Model files and training artifacts
+- tensorboard/: TensorBoard logs for visualization
+- logs/: Training and monitor logs
+- results/: Analysis results and outputs
+- slurm/: SLURM job output
+- analyze_run.py: Script to analyze this run's performance
+
+To analyze this run:
+  cd /u6/cjrisi/rl-insulin-pump/runs/ddpg_run_20250715_192747_retroactive
+  python analyze_run.py
+
+To view TensorBoard logs:
+  tensorboard --logdir /u6/cjrisi/rl-insulin-pump/runs/ddpg_run_20250715_192747_retroactive/tensorboard/

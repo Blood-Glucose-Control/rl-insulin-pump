@@ -1,0 +1,155 @@
+INFO:__main__:Using device: cuda
+INFO:src.environments.env_loader:Using 30 default patients
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#001 with ID: simglucose/multi-patient-adolescent_001-v0
+INFO:src.environments.multipatient:Initialized MultiPatientEnv with 30 patients
+INFO:src.environments.env_loader:Using 30 default patients
+/u6/cjrisi/rl-insulin-pump/env/lib/python3.11/site-packages/gymnasium/envs/registration.py:694: UserWarning: [33mWARN: Overriding environment simglucose/multi-patient-adolescent_001-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#001 with ID: simglucose/multi-patient-adolescent_001-v0
+INFO:src.environments.multipatient:Initialized MultiPatientEnv with 30 patients
+INFO:src.training.experiment_runner:Starting training...
+INFO:src.environments.multipatient:Switching to patient: adolescent#002
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#002 with ID: simglucose/multi-patient-adolescent_002-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#002 (2/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#002
+INFO:src.environments.multipatient:Switching to patient: adolescent#003
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#003 with ID: simglucose/multi-patient-adolescent_003-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#003 (3/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#003
+INFO:src.environments.multipatient:Switching to patient: adolescent#004
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#004 with ID: simglucose/multi-patient-adolescent_004-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#004 (4/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#004
+INFO:src.environments.multipatient:Switching to patient: adolescent#005
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#005 with ID: simglucose/multi-patient-adolescent_005-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#005 (5/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#005
+INFO:src.environments.multipatient:Switching to patient: adolescent#006
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#006 with ID: simglucose/multi-patient-adolescent_006-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#006 (6/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#006
+INFO:src.environments.multipatient:Switching to patient: adolescent#007
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#007 with ID: simglucose/multi-patient-adolescent_007-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#007 (7/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#007
+INFO:src.environments.multipatient:Switching to patient: adolescent#008
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#008 with ID: simglucose/multi-patient-adolescent_008-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#008 (8/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#008
+INFO:src.environments.multipatient:Switching to patient: adolescent#009
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#009 with ID: simglucose/multi-patient-adolescent_009-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#009 (9/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#009
+INFO:src.environments.multipatient:Switching to patient: adolescent#010
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#010 with ID: simglucose/multi-patient-adolescent_010-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adolescent#010 (10/30)
+INFO:src.environments.multipatient:Episode finished for patient: adolescent#010
+INFO:src.environments.multipatient:Switching to patient: adult#001
+INFO:src.environments.multipatient:Registered environment for patient: adult#001 with ID: simglucose/multi-patient-adult_001-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#001 (11/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adult#001
+INFO:src.environments.multipatient:Switching to patient: adult#002
+INFO:src.environments.multipatient:Registered environment for patient: adult#002 with ID: simglucose/multi-patient-adult_002-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#002 (12/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adult#002
+INFO:src.environments.multipatient:Switching to patient: adult#003
+INFO:src.environments.multipatient:Registered environment for patient: adult#003 with ID: simglucose/multi-patient-adult_003-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#003 (13/30)
+INFO:src.environments.multipatient:Episode finished for patient: adult#003
+INFO:src.environments.multipatient:Switching to patient: adult#004
+INFO:src.environments.multipatient:Registered environment for patient: adult#004 with ID: simglucose/multi-patient-adult_004-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#004 (14/30)
+INFO:src.environments.multipatient:Episode finished for patient: adult#004
+INFO:src.environments.multipatient:Switching to patient: adult#005
+INFO:src.environments.multipatient:Registered environment for patient: adult#005 with ID: simglucose/multi-patient-adult_005-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#005 (15/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adult#005
+INFO:src.environments.multipatient:Switching to patient: adult#006
+INFO:src.environments.multipatient:Registered environment for patient: adult#006 with ID: simglucose/multi-patient-adult_006-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#006 (16/30)
+INFO:src.environments.multipatient:Episode finished for patient: adult#006
+INFO:src.environments.multipatient:Switching to patient: adult#007
+INFO:src.environments.multipatient:Registered environment for patient: adult#007 with ID: simglucose/multi-patient-adult_007-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#007 (17/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adult#007
+INFO:src.environments.multipatient:Switching to patient: adult#008
+INFO:src.environments.multipatient:Registered environment for patient: adult#008 with ID: simglucose/multi-patient-adult_008-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#008 (18/30)
+INFO:src.environments.multipatient:Episode finished for patient: adult#008
+INFO:src.environments.multipatient:Switching to patient: adult#009
+INFO:src.environments.multipatient:Registered environment for patient: adult#009 with ID: simglucose/multi-patient-adult_009-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#009 (19/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: adult#009
+INFO:src.environments.multipatient:Switching to patient: adult#010
+INFO:src.environments.multipatient:Registered environment for patient: adult#010 with ID: simglucose/multi-patient-adult_010-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient adult#010 (20/30)
+INFO:src.environments.multipatient:Episode finished for patient: adult#010
+INFO:src.environments.multipatient:Switching to patient: child#001
+INFO:src.environments.multipatient:Registered environment for patient: child#001 with ID: simglucose/multi-patient-child_001-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#001 (21/30)
+INFO:src.environments.multipatient:Episode finished for patient: child#001
+INFO:src.environments.multipatient:Switching to patient: child#002
+INFO:src.environments.multipatient:Registered environment for patient: child#002 with ID: simglucose/multi-patient-child_002-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#002 (22/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: child#002
+INFO:src.environments.multipatient:Switching to patient: child#003
+INFO:src.environments.multipatient:Registered environment for patient: child#003 with ID: simglucose/multi-patient-child_003-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#003 (23/30)
+INFO:src.environments.multipatient:Episode finished for patient: child#003
+INFO:src.environments.multipatient:Switching to patient: child#004
+INFO:src.environments.multipatient:Registered environment for patient: child#004 with ID: simglucose/multi-patient-child_004-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#004 (24/30)
+INFO:src.environments.multipatient:Episode finished for patient: child#004
+INFO:src.environments.multipatient:Switching to patient: child#005
+INFO:src.environments.multipatient:Registered environment for patient: child#005 with ID: simglucose/multi-patient-child_005-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#005 (25/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.environments.multipatient:Episode finished for patient: child#005
+INFO:src.environments.multipatient:Switching to patient: child#006
+INFO:src.environments.multipatient:Registered environment for patient: child#006 with ID: simglucose/multi-patient-child_006-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#006 (26/30)
+INFO:src.environments.multipatient:Episode finished for patient: child#006
+INFO:src.environments.multipatient:Switching to patient: child#007
+INFO:src.environments.multipatient:Registered environment for patient: child#007 with ID: simglucose/multi-patient-child_007-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#007 (27/30)
+INFO:src.environments.multipatient:Episode finished for patient: child#007
+INFO:src.environments.multipatient:Switching to patient: child#008
+INFO:src.environments.multipatient:Registered environment for patient: child#008 with ID: simglucose/multi-patient-child_008-v0
+INFO:simglucose.actuator.pump:Resetting insulin pump ...
+INFO:src.training.callbacks.patient_switch:Training on patient child#008 (28/30)
+INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 100 steps
+INFO:src.training.experiment_runner:Model saved as 'ddpg_simglucose'.

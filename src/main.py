@@ -65,6 +65,7 @@ def main():
     runner = ExperimentRunner(cfg)
 
     if mode == "train":
+        print(f"Training with configuration: {cfg}")
         runner.train()
     elif mode == "predict":
         runner.predict()
