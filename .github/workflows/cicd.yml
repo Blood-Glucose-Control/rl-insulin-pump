@@ -28,7 +28,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install -e .
+        cd simglucose
+        pip install -e . --config-settings ediable_mode=compat
+        cd ..
 
     - name: Run pre-commit
       run: |
