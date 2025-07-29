@@ -10,6 +10,7 @@ This README is a brief explanation of the configurations available in the yaml f
 |model_save_path|STRING |file to save the model after it is done training, or file to load the model from for evaluation and prediction
 |seed           |INT    |the seed to use for random number generation for getting consistent results
 |model_name     |STRING |the name of the model to use, currently supports "DDPG" and "PPO"
+|run_directory  |STRING |file directory to save all files created by the run
 ### env
 | field name        | type                      | description|
 |-------------------|---------------------------|------------|
@@ -39,8 +40,6 @@ Note: since these are used to initialize the model, the model parameters support
 | field name    | type  | description|
 |---------------|-------|------------|
 |total_timesteps|INT    |the total number of timesteps to train for
-|save_path      |PATH   |the directory to store model checkpoints in
-|log_path       |PATH   |the directory to store logs in, when evaluating, the best model will also be stored in this directory
 |checkpoint_freq|INT    |the number of timesteps between saving checkpoints
 
 ### eval
@@ -52,14 +51,7 @@ Note: since these are used to initialize the model, the model parameters support
 ### predict
 | field name    | type  | description|
 |---------------|-------|------------|
-|save_path      |PATH   |directory to save prediction results to
 |filename       |STRING |the filename of the prediction save file, i.e. file will be <filename\>.csv
-
-### analyze
-| field name    | type  | description|
-|---------------|-------|------------|
-|files_path     |PATH   |directory to get data to analyze from, analysis will be ran on all csv files in this directory
-|save_path      |PATH   |directory to save completed analysis to
 
 ### Example Configuration
 ```yaml
@@ -88,8 +80,6 @@ model:
 
 training:
   total_timesteps: 1000000
-  save_path: checkpoints/
-  log_path: logs/
   checkpoint_freq: 50000
 
 eval:
@@ -98,10 +88,6 @@ eval:
 
 predict:
   n_eval_episodes: 5
-  save_path: predictions/
   filename: predictions.csv
 
-analyze:
-  files_path: analysis_data/
-  save_path: analysis_results/
 ```

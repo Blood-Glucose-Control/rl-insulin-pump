@@ -89,12 +89,7 @@ with open('$CONFIG', 'r') as f:
     config = yaml.safe_load(f)
 
 # Update paths to point to run directory
-config['model']['tensorboard_log'] = '$RUN_DIR/tensorboard/'
-config['training']['save_path'] = '$RUN_DIR/checkpoints/'
-config['training']['log_path'] = '$RUN_DIR/logs/'
-config['predict']['save_path'] = '$RUN_DIR/results/'
-config['analyze']['files_path'] = '$RUN_DIR/results/'
-config['analyze']['save_path'] = '$RUN_DIR/results/'
+config['run_directory'] = '$RUN_DIR'
 
 # Save modified config
 with open('$CONFIG_COPY', 'w') as f:

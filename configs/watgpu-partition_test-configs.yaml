@@ -4,6 +4,7 @@ env:
   max_episode_steps: 10000
   patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
 seed: 42
+run_directory: "RUN_DIR"
 model_name: "DDPG"
 action_noise:
   mean: 0
@@ -13,20 +14,13 @@ model:
   buffer_size: 100000
   batch_size: 256
   gamma: 0.99
-  tensorboard_log: "./tb_logs/"
 training:
   total_timesteps: 10000
-  save_path: "./checkpoints/"
-  log_path: "./logs/"
   checkpoint_freq: 1000
 eval:
   eval_freq: 5000
   n_eval_episodes: 5
 predict:
-  save_path: "./results"
   prefix: "adolescent#002"
-analyze:
-  files_path: "./results"
-  save_path: "./results"
 device: "gpu"
 mode: "train"
