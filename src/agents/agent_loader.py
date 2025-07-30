@@ -33,7 +33,7 @@ def make_model(cfg, env, network_config=None):
         "buffer_size": model_config["buffer_size"],
         "batch_size": model_config["batch_size"],
         "gamma": model_config["gamma"],
-        "tensorboard_log": model_config["run_directory"]+"/tensorboard/",
+        "tensorboard_log": model_config["run_directory"] + "/tensorboard/",
         "policy_kwargs": policy_kwargs,
     }
 

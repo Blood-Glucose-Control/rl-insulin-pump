@@ -77,7 +77,10 @@ def main():
         # Also print results to console
         plot_results(results)
     elif mode == "analyze":
-        sg_analyze(f"{cfg.get("run_directory", None)}/results/predict/", f"{cfg.get("run_directory", None)}/results/analysis/")
+        sg_analyze(
+            f"{cfg.get('run_directory', None)}/results/predict/",
+            f"{cfg.get('run_directory', None)}/results/analysis/",
+        )
     else:
         logger.error(
             f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."

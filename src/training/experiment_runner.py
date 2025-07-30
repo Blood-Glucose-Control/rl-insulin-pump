@@ -23,7 +23,7 @@ class ExperimentRunner:
             EvalCallback(
                 self.eval_env,
                 best_model_save_path=self.cfg["training"]["log_path"],
-                log_path=self.cfg["run_directory"]+"/logs/",
+                log_path=self.cfg["run_directory"] + "/logs/",
                 eval_freq=self.cfg["eval"]["eval_freq"],
                 n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
             )
@@ -33,7 +33,7 @@ class ExperimentRunner:
         self.callbacks.append(
             CheckpointCallback(
                 save_freq=self.cfg["training"]["checkpoint_freq"],
-                save_path=self.cfg["run_directory"]+"/checkpoints/",
+                save_path=self.cfg["run_directory"] + "/checkpoints/",
                 name_prefix="ddpg_checkpoint",
             )
         )
