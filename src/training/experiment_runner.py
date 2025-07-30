@@ -22,7 +22,7 @@ class ExperimentRunner:
         self.callbacks.append(
             EvalCallback(
                 self.eval_env,
-                best_model_save_path=self.cfg["training"]["log_path"],
+                best_model_save_path=self.cfg["run_directory"] + "/best_model/",
                 log_path=self.cfg["run_directory"] + "/logs/",
                 eval_freq=self.cfg["eval"]["eval_freq"],
                 n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
