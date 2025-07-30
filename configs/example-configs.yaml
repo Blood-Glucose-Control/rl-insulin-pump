@@ -1,0 +1,25 @@
+env:
+  id: "simglucose/multi-patient-v0"
+  entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
+  max_episode_steps: 1000
+  patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
+seed: 42
+model_name: "DDPG"
+action_noise:
+  mean: 0
+  sigma: 0.25
+model:
+  learning_rate: 0.001
+  buffer_size: 100000
+  batch_size: 256
+  gamma: 0.99
+training:
+  total_timesteps: 1000
+  checkpoint_freq: 10000
+eval:
+  eval_freq: 5000
+  n_eval_episodes: 5
+predict:
+  prefix: "adolescent#002"
+device: "cpu"
+mode: "analyze"

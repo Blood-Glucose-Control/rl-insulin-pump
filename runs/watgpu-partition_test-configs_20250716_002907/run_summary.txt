@@ -1,0 +1,26 @@
+Training Run: watgpu-partition_test-configs_20250716_002907
+Created: Wed Jul 16 12:29:07 AM UTC 2025
+Configuration: watgpu-partition_test-configs.yaml
+Original config: configs/watgpu-partition_test-configs.yaml
+
+SLURM Settings:
+- Time limit: 01:00:00
+- Memory: 8G
+- CPUs: 4
+- GPU: gpu:1
+- Partition: HI
+
+Directory Structure:
+- Run directory: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907
+- Logs: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/logs/
+- Checkpoints: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/checkpoints/
+- TensorBoard: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/tensorboard/
+- Results: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/results/
+- SLURM logs: /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/slurm/
+
+To monitor the job:
+- squeue -u cjrisi
+- tail -f /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/slurm/slurm-*.out
+
+To view TensorBoard:
+- tensorboard --logdir /u6/cjrisi/rl-insulin-pump/runs/watgpu-partition_test-configs_20250716_002907/tensorboard/
