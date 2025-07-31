@@ -1,0 +1,22 @@
+INFO:__main__:Using device: cuda
+INFO:src.environments.env_loader:Using 30 default patients
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#001 with ID: simglucose/multi-patient-adolescent_001-v0
+INFO:src.environments.multipatient:Initialized MultiPatientEnv with 30 patients
+INFO:src.environments.env_loader:Using 30 default patients
+/u6/cjrisi/rl-insulin-pump/env/lib/python3.11/site-packages/gymnasium/envs/registration.py:694: UserWarning: [33mWARN: Overriding environment simglucose/multi-patient-adolescent_001-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+INFO:src.environments.multipatient:Registered environment for patient: adolescent#001 with ID: simglucose/multi-patient-adolescent_001-v0
+INFO:src.environments.multipatient:Initialized MultiPatientEnv with 30 patients
+Traceback (most recent call last):
+  File "/u6/cjrisi/rl-insulin-pump/src/main.py", line 91, in <module>
+    main()
+  File "/u6/cjrisi/rl-insulin-pump/src/main.py", line 65, in main
+    runner = ExperimentRunner(cfg)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/u6/cjrisi/rl-insulin-pump/src/training/experiment_runner.py", line 18, in __init__
+    self.model = make_model(cfg, self.env)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u6/cjrisi/rl-insulin-pump/src/agents/agent_loader.py", line 36, in make_model
+    "tensorboard_log": model_config["run_directory"] + "/tensorboard/",
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'run_directory'

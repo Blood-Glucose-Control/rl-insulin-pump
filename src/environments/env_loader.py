@@ -64,7 +64,7 @@ def make_env(cfg, render_mode=None):
         env_id=cfg["env"]["id"],
         entry_point=cfg["env"]["entry_point"],
         max_episode_steps=cfg["env"]["max_episode_steps"],
-        reward_fun=risk_diff_reward_fn,
+        reward_fun=risk_diff_reward_fn, #TODO: make this configurable
         seed=cfg["seed"],
         render_mode=render_mode,
     )

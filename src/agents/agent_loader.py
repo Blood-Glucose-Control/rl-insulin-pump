@@ -24,7 +24,7 @@ def make_model(cfg, env, network_config=None):
     )
 
     model_kwargs = {
-        "policy": "MlpPolicy",
+        "policy": "MlpPolicy", #TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
         "env": env,
         "action_noise": action_noise,
         "verbose": 1,

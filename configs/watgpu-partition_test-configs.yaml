@@ -23,4 +23,4 @@ eval:
 predict:
   prefix: "adolescent#002"
 device: "gpu"
-mode: "train"
+mode: ["train", "predict"]

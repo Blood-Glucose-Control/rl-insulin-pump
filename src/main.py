@@ -60,31 +60,34 @@ def main():
     select_device(cfg)
 
     # Decide on the mode based on configuration
-    mode = cfg.get("mode", "train").lower()
+    modes = cfg.get(key="mode", default="train")
 
     runner = ExperimentRunner(cfg)
 
-    if mode == "train":
-        print(f"Training with configuration: {cfg}")
-        runner.train()
-    elif mode == "predict":
-        runner.predict()
-    elif mode == "grid_search":
-        # Run grid search over network configurations
-        results = grid_search()
-        # Visualize and save results
-        visualize_results(results)
-        # Also print results to console
-        plot_results(results)
-    elif mode == "analyze":
-        sg_analyze(
-            f"{cfg.get('run_directory', None)}/results/predict/",
-            f"{cfg.get('run_directory', None)}/results/analysis/",
-        )
-    else:
-        logger.error(
-            f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."
-        )
+    for mode in modes:
+        mode = mode.lower()
+        logger.info(f"Running mode: {mode}")
+        if mode == "train":
+            print(f"Training with configuration: {cfg}")
+            runner.train()
+        elif mode == "predict":
+            runner.predict()
+        elif mode == "grid_search":
+            # Run grid search over network configurations
+            results = grid_search()
+            # Visualize and save results
+            visualize_results(results)
+            # Also print results to console
+            plot_results(results)
+        elif mode == "analyze":
+            sg_analyze(
+                f"{cfg.get('run_directory', None)}/results/predict/",
+                f"{cfg.get('run_directory', None)}/results/analysis/",
+            )
+        else:
+            logger.error(
+                f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."
+            )
 
 
 if __name__ == "__main__":

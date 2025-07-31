@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 class ExperimentRunner:
     def __init__(self, cfg, callbacks=None):
         self.cfg = cfg
-        self.env = make_env(cfg, render_mode=None)
-        self.eval_env = make_env(cfg, render_mode=None)
+        self.env = make_env(cfg, render_mode=None) #TODO: Why are we using .env and .eval_env?
+        self.eval_env = make_env(cfg, render_mode=None) #TODO: Why are we using .env and .eval_env?
         self.model = make_model(cfg, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
