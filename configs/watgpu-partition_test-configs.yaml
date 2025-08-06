@@ -22,5 +22,6 @@ eval:
   n_eval_episodes: 5
 predict:
   prefix: "adolescent#002"
+  predict_steps: 20
 device: "gpu"
 mode: ["train", "predict"]

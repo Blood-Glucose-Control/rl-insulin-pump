@@ -6,7 +6,7 @@ This README is a brief explanation of the configurations available in the yaml f
 | field name    | type  | description|
 |---------------|-------|------------|
 |device         |STRING |either "cuda", "mps" or "cpu" to indicate which device to use. By default CUDA will be used if available, and CPU will be used otherwise
-|mode           |STRING |one of "train", "eval", "predict", or "analyze" to indicate which path to run
+|mode           |LIST |the list must contain one of "train", "eval", "predict", or "analyze" to indicate which path to run, will run these modes sequentially so always run "train first"
 |model_save_path|STRING |file to save the model after it is done training, or file to load the model from for evaluation and prediction
 |seed           |INT    |the seed to use for random number generation for getting consistent results
 |model_name     |STRING |the name of the model to use, currently supports "DDPG" and "PPO"

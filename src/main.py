@@ -60,13 +60,16 @@ def main():
     select_device(cfg)
 
     # Decide on the mode based on configuration
-    modes = cfg.get(key="mode", default="train")
+    modes = cfg.get("mode", ["train"])
 
     runner = ExperimentRunner(cfg)
 
     for mode in modes:
         mode = mode.lower()
-        logger.info(f"Running mode: {mode}")
+        logger.info(f"""\n
+                    =====================================\n
+                    Running mode: {mode}\n
+                    =====================================\n""")
         if mode == "train":
             print(f"Training with configuration: {cfg}")
             runner.train()

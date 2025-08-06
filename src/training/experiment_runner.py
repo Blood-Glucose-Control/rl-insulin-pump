@@ -13,8 +13,12 @@ logger = logging.getLogger(__name__)
 class ExperimentRunner:
     def __init__(self, cfg, callbacks=None):
         self.cfg = cfg
-        self.env = make_env(cfg, render_mode=None) #TODO: Why are we using .env and .eval_env?
-        self.eval_env = make_env(cfg, render_mode=None) #TODO: Why are we using .env and .eval_env?
+        self.env = make_env(
+            cfg, render_mode=None
+        )  # TODO: Why are we using .env and .eval_env?
+        self.eval_env = make_env(
+            cfg, render_mode=None
+        )  # TODO: Why are we using .env and .eval_env?
         self.model = make_model(cfg, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
@@ -67,7 +71,14 @@ class ExperimentRunner:
         )
 
         observation, info = env.reset(seed=self.cfg["seed"])
-        max_steps = self.cfg.get("predict_steps", 20)
+
+        predict_cfgs = self.cfg.get("predict", {})
+        if "predict_steps" in predict_cfgs:
+            max_steps = predict_cfgs["predict_steps"]
+        else:
+            max_steps = 40
+            logger.info(f"Running prediction for default {max_steps} steps...")
+        logger.info(f"Running prediction for {max_steps} steps...")
 
         for t in range(max_steps):
             env.render()
@@ -80,8 +91,75 @@ class ExperimentRunner:
                 logger.info("Episode finished after {} timesteps".format(t + 1))
                 break
 
-        history = env.show_history()
-        history.to_csv(
-            f"{self.cfg['run_directory']}/results/predict/{self.cfg['predict']['filename']}.csv"
-        )
+        # Access the underlying T1DSimEnv through the wrapper chain
+        history = None
+
+        # Method 0: Try unwrapped first
+        try:
+            history = env.unwrapped.show_history()
+            logger.info(
+                "Method 0: Successfully retrieved history from unwrapped environment"
+            )
+        except AttributeError as e:
+            logger.info(f"Unwrapped method failed: {e}")
+
+        # Method 1: Try to access show_history directly
+        if history is None:
+            try:
+                history = env.get_wrapper_attr("show_history")
+                logger.info(
+                    "Method 1: Successfully retrieved history from environment through `env.get_wrapper_attr('show_history')` "
+                )
+            except AttributeError as e:
+                logger.info(f"get_wrapper_attr('show_history') method failed: {e}")
+
+        # Method 2: Navigate through the wrapper chain manually
+        if history is None:
+            try:
+                current_env = env
+                while hasattr(current_env, "env"):
+                    logger.info(
+                        f"Method 2: Checking environment type: {type(current_env)}"
+                    )
+                    if hasattr(current_env, "show_history"):
+                        history = current_env.show_history()
+                        logger.info("Found show_history in wrapper chain")
+                        break
+                    current_env = current_env.env
+
+                # Check the final environment
+                if history is None and hasattr(current_env, "show_history"):
+                    history = current_env.show_history()
+                    logger.info(
+                        f"Found show_history in environment: {type(current_env)}"
+                    )
+            except Exception as e:
+                logger.info(f"Wrapper chain navigation failed: {e}")
+
+        # Method 3: Try to access specific wrapper types
+        if history is None:
+            try:
+                # Look for the actual T1DSimEnv or similar
+                if hasattr(env, "_env"):
+                    history = env._env.show_history()
+                    logger.info("Method 3: Found show_history via _env attribute")
+            except Exception as e:
+                logger.info(f"_env access failed: {e}")
+
+        if history is not None:
+            logger.info(f"History type: {type(history)}")
+            history.to_csv(f"{self.cfg['run_directory']}/results/results.csv")
+            logger.info("History successfully saved to CSV")
+        else:
+            logger.error("Could not retrieve history from any method")
+            logger.error(f"Environment type: {type(env)}")
+            logger.error(
+                f"Environment dir: {[attr for attr in dir(env) if not attr.startswith('_')]}"
+            )
+            if hasattr(env, "env"):
+                logger.error(f"Inner env type: {type(env.env)}")
+                logger.error(
+                    f"Inner env dir: {[attr for attr in dir(env.env) if not attr.startswith('_')]}"
+                )
+
         env.close()
