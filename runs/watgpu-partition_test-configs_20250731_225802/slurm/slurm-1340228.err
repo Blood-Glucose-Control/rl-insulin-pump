@@ -12,7 +12,7 @@ INFO:src.environments.env_loader:Creating environment with patients: ['adolescen
 INFO:src.environments.multipatient:Registered environment for patient: adolescent#001 with ID: simglucose/multi-patient-adolescent_001-v0
 INFO:src.environments.multipatient:Initialized MultiPatientEnv with 30 patients
 INFO:__main__:
- 
+
                     =====================================
 
                     Running mode: train
@@ -1934,7 +1934,7 @@ INFO:simglucose.actuator.pump:Resetting insulin pump ...
 INFO:src.training.callbacks.patient_switch:PatientSwitchCallback: Forcing patient switch after 500 steps
 INFO:src.training.experiment_runner:Model saved as 'ddpg_simglucose'.
 INFO:__main__:
- 
+
                     =====================================
 
                     Running mode: predict

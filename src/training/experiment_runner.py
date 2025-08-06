@@ -114,10 +114,9 @@ class ExperimentRunner:
                     )
             except Exception as e:
                 logger.info(f"Wrapper chain navigation failed: {e}")
-                )
 
-        #history = env.show_history()
-        #history.to_csv(
+        # history = env.show_history()
+        # history.to_csv(
         #    f"{self.cfg['run_directory']}/results/predict/{self.cfg['predict']['filename']}.csv"
-        #)
+        # )
         env.close()
