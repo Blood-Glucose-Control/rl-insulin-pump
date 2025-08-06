@@ -61,6 +61,7 @@ def make_env(cfg, mode="train", render_mode=None):
 
     # Create multi-patient environment (works for both single and multiple patients)
     logger.info(f"Creating environment with patients: {patient_names}")
+
     env = MultiPatientEnv(
         patient_names=patient_names,
         env_id=cfg["env"]["id"],

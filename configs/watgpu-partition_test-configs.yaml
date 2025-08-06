@@ -25,3 +25,4 @@ predict:
   predict_steps: 20
 device: "gpu"
 mode: ["train", "predict"]
+

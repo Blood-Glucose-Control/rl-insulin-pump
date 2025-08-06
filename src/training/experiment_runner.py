@@ -93,27 +93,6 @@ class ExperimentRunner:
 
         # Access the underlying T1DSimEnv through the wrapper chain
         history = None
-
-        # Method 0: Try unwrapped first
-        try:
-            history = env.unwrapped.show_history()
-            logger.info(
-                "Method 0: Successfully retrieved history from unwrapped environment"
-            )
-        except AttributeError as e:
-            logger.info(f"Unwrapped method failed: {e}")
-
-        # Method 1: Try to access show_history directly
-        if history is None:
-            try:
-                history = env.get_wrapper_attr("show_history")
-                logger.info(
-                    "Method 1: Successfully retrieved history from environment through `env.get_wrapper_attr('show_history')` "
-                )
-            except AttributeError as e:
-                logger.info(f"get_wrapper_attr('show_history') method failed: {e}")
-
-        # Method 2: Navigate through the wrapper chain manually
         if history is None:
             try:
                 current_env = env
@@ -135,31 +114,10 @@ class ExperimentRunner:
                     )
             except Exception as e:
                 logger.info(f"Wrapper chain navigation failed: {e}")
-
-        # Method 3: Try to access specific wrapper types
-        if history is None:
-            try:
-                # Look for the actual T1DSimEnv or similar
-                if hasattr(env, "_env"):
-                    history = env._env.show_history()
-                    logger.info("Method 3: Found show_history via _env attribute")
-            except Exception as e:
-                logger.info(f"_env access failed: {e}")
-
-        if history is not None:
-            logger.info(f"History type: {type(history)}")
-            history.to_csv(f"{self.cfg['run_directory']}/results/results.csv")
-            logger.info("History successfully saved to CSV")
-        else:
-            logger.error("Could not retrieve history from any method")
-            logger.error(f"Environment type: {type(env)}")
-            logger.error(
-                f"Environment dir: {[attr for attr in dir(env) if not attr.startswith('_')]}"
-            )
-            if hasattr(env, "env"):
-                logger.error(f"Inner env type: {type(env.env)}")
-                logger.error(
-                    f"Inner env dir: {[attr for attr in dir(env.env) if not attr.startswith('_')]}"
                 )
 
+        #history = env.show_history()
+        #history.to_csv(
+        #    f"{self.cfg['run_directory']}/results/predict/{self.cfg['predict']['filename']}.csv"
+        #)
         env.close()
