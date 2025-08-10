@@ -131,6 +131,8 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
         reward_fun=None,
         seed=None,
         render_mode=None,
+        discrete_action_space=False,
+        discrete_observation_space=False,
     ) -> None:
         super().__init__()
         self.render_mode = render_mode
@@ -140,12 +142,21 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
             reward_fun=reward_fun,
             seed=seed,
         )
-        self.observation_space = gymnasium.spaces.Box(
-            low=0, high=self.MAX_BG, shape=(1,), dtype=np.float32
-        )
-        self.action_space = gymnasium.spaces.Box(
-            low=0, high=self.env.max_basal, shape=(1,), dtype=np.float32
-        )
+        self.discrete_action_space = discrete_action_space
+        self.discrete_observation_space = discrete_observation_space
+        # for dqn models, we want a discrete action space and observation space instead
+        if discrete_action_space:
+            self.action_space = gymnasium.spaces.Discrete(int((self.env.max_basal)//0.1), start=0)
+        else:
+            self.action_space = gymnasium.spaces.Box(
+                low=0, high=self.env.max_basal, shape=(1,), dtype=np.float32
+            )
+        if discrete_observation_space:
+            self.observation_space = gymnasium.spaces.Discrete(int((self.MAX_BG)//0.1), start=0)
+        else:
+            self.observation_space = gymnasium.spaces.Box(
+                low=0, high=self.MAX_BG, shape=(1,), dtype=np.float32
+            )
 
     def step(self, action):
         obs, reward, done, info = self.env.step(action)
@@ -159,11 +170,15 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
         # )
         # Once the max_episode_steps is set, the truncated value will be overridden.
         truncated = False
+        if self.discrete_observation_space:
+            return int(obs.CGM*10), reward, done, truncated, info
         return np.array([obs.CGM], dtype=np.float32), reward, done, truncated, info
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         obs, _, _, info = self.env._raw_reset()
+        if self.discrete_observation_space:
+            return int(obs.CGM*10), info
         return np.array([obs.CGM], dtype=np.float32), info
 
     def render(self):

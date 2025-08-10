@@ -52,7 +52,7 @@ Note: since these are used to initialize the model, the model parameters support
 | field name    | type  | description|
 |---------------|-------|------------|
 |filename       |STRING |the filename of the prediction save file, i.e. file will be <filename\>.csv
-
+|predict_steps  |INT    |max time steps to predict for|
 ### Example Configuration
 ```yaml
 device: cuda
