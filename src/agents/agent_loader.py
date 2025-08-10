@@ -29,7 +29,9 @@ def make_model(cfg, env, network_config=None):
     )
 
     model_kwargs = {
-        "policy": model_config["policy"],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
+        "policy": model_config[
+            "policy"
+        ],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
         "env": env,
         "action_noise": action_noise,
         "verbose": 1,
@@ -49,7 +51,9 @@ def make_model(cfg, env, network_config=None):
             return PPO(**model_kwargs)
         case "DQN":
             model_kwargs = {
-                "policy": model_config["policy"],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
+                "policy": model_config[
+                    "policy"
+                ],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
                 "env": env,
                 "verbose": 1,
                 "device": cfg["device"],

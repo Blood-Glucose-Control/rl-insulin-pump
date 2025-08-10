@@ -115,7 +115,7 @@ class MultiPatientEnv(Wrapper):
             "patient_name": patient_name,  # The actual patient identifier
             "reward_fun": self.reward_fun,  # The reward function to use
             "discrete_action_space": self.discrete_action_space,
-            "discrete_observation_space": self.discrete_observation_space
+            "discrete_observation_space": self.discrete_observation_space,
         }
 
         try:
