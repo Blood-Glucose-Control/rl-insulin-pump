@@ -187,3 +187,6 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
 
     def close(self):
         self.env.close()
+
+    def show_history(self):
+        return self.env.env.show_history()
