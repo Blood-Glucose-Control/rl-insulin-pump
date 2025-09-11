@@ -106,6 +106,9 @@ class T1DSimEnv(gym.Env):
         super()._close()
         self.env._close_viewer()
 
+    def show_history(self):
+        return self.env.show_history()
+    
     @property
     def action_space(self):
         ub = self.env.pump._params["max_basal"]
@@ -189,4 +192,4 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
         self.env.close()
 
     def show_history(self):
-        return self.env.env.show_history()
+        return self.env.unwrapped.show_history()

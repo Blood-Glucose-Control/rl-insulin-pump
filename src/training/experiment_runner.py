@@ -3,7 +3,6 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
-from src.environments.multipatient import MultiPatientEnv
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -57,8 +56,8 @@ class ExperimentRunner:
         logger.info(f"Model saved as '{model_path}'.")
 
     def multi_patient_predict(self, env, model, max_steps=40):
-        observation, info = env.reset(seed=self.cfg["seed"])
         for patient in env.patient_names:
+            observation, info = env.reset(seed=self.cfg["seed"])
             logger.info(f"Starting prediction for patient {patient}...")
             for t in range(max_steps):
                 env.render()
@@ -70,11 +69,11 @@ class ExperimentRunner:
                 if terminated or truncated:
                     logger.info(
                         "Episode for patient {} finished after {} timesteps".format(
-                            env.patient, t + 1
+                            patient, t + 1
                         )
                     )
                     break
-            history = env.show_history()
+            history = env.unwrapped.show_history()
             history.to_csv(
                 f"{self.cfg['run_directory']}/results/predict/{patient}_predict.csv"
             )
@@ -101,7 +100,8 @@ class ExperimentRunner:
             logger.info(f"Running prediction for default {max_steps} steps...")
         logger.info(f"Running prediction for {max_steps} steps...")
 
-        if env.isinstanceof(MultiPatientEnv):
+        if self.cfg["env"]["patient_name"] == "all" or isinstance(
+            self.cfg["env"]["patient_name"], list):
             self.multi_patient_predict(env, model, max_steps)
         else:
             observation, info = env.reset(seed=self.cfg["seed"])
@@ -116,31 +116,7 @@ class ExperimentRunner:
                     logger.info("Episode finished after {} timesteps".format(t + 1))
                     break
 
-            # Access the underlying T1DSimEnv through the wrapper chain
-            # history = None
-            # if history is None:
-            #     try:
-            #         current_env = env
-            #         while hasattr(current_env, "env"):
-            #             logger.info(
-            #                 f"Method 2: Checking environment type: {type(current_env)}"
-            #             )
-            #             if hasattr(current_env, "show_history"):
-            #                 history = current_env.show_history()
-            #                 logger.info("Found show_history in wrapper chain")
-            #                 break
-            #             current_env = current_env.env
-
-            #         # Check the final environment
-            #         if history is None and hasattr(current_env, "show_history"):
-            #             history = current_env.show_history()
-            #             logger.info(
-            #                 f"Found show_history in environment: {type(current_env)}"
-            #             )
-            #     except Exception as e:
-            #         logger.info(f"Wrapper chain navigation failed: {e}")
-
-            history = env.show_history()
+            history = env.unwrapped.show_history()
             history.to_csv(
                 f"{self.cfg['run_directory']}/results/predict/{self.cfg['predict']['filename']}.csv"
             )

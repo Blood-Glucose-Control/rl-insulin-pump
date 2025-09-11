@@ -223,3 +223,6 @@ class MultiPatientEnv(Wrapper):
 
         # Reset the new environment and return initial observation
         return self.env.reset(**kwargs)
+    
+    def show_history(self):
+        self.env.unwrapped.show_history()
