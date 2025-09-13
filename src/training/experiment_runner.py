@@ -101,7 +101,8 @@ class ExperimentRunner:
         logger.info(f"Running prediction for {max_steps} steps...")
 
         if self.cfg["env"]["patient_name"] == "all" or isinstance(
-            self.cfg["env"]["patient_name"], list):
+            self.cfg["env"]["patient_name"], list
+        ):
             self.multi_patient_predict(env, model, max_steps)
         else:
             observation, info = env.reset(seed=self.cfg["seed"])
