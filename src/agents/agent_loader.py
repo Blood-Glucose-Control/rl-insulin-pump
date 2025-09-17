@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def make_model(cfg, env, network_config=None):
-    if cfg["env"].get("discrete_action_space", True):
+    if cfg["env"].get("discrete_action_space", False):
         n_actions = env.action_space.n
     else:
         n_actions = env.action_space.shape[-1]
@@ -70,17 +70,18 @@ def make_model(cfg, env, network_config=None):
 
 def load_model(cfg):
     match cfg["model_name"]:
+        # TODO: This is made for working on Linux systems, Windows may need to add .zip to the file name
         case "DDPG":
             return DDPG.load(
-                cfg.get("model_save_path", "ddpg_simglucose.zip"), device=cfg["device"]
+                cfg.get("model_save_path", "ddpg_simglucose"), device=cfg["device"]
             )
         case "PPO":
             return PPO.load(
-                cfg.get("model_save_path", "ppo_simglucose.zip"), device=cfg["device"]
+                cfg.get("model_save_path", "ppo_simglucose"), device=cfg["device"]
             )
         case "DQN":
             return DQN.load(
-                cfg.get("model_save_path", "dqn_simglucose.zip"), device=cfg["device"]
+                cfg.get("model_save_path", "dqn_simglucose"), device=cfg["device"]
             )
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
