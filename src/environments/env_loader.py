@@ -73,7 +73,7 @@ def make_env(cfg, mode="train", render_mode=None):
         discrete_action_space=cfg["env"].get("discrete_action_space", False),
         discrete_observation_space=cfg["env"].get("discrete_observation_space", False),
         discrete_action_step=cfg["env"].get("discrete_action_space", False),
-        discrete_observatin_step=cfg["env"].get("discrete_observation_space", False),
+        discrete_observation_step=cfg["env"].get("discrete_observation_space", False),
     )
 
     # Add monitoring wrapper for tracking performance
