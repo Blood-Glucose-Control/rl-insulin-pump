@@ -3,6 +3,7 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
+from src.utils.config import Config
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -10,14 +11,11 @@ logger = logging.getLogger(__name__)
 
 
 class ExperimentRunner:
-    def __init__(self, cfg, callbacks=None):
+    def __init__(self, cfg, config: Config, callbacks=None):
         self.cfg = cfg
-        self.env = make_env(
-            cfg, render_mode=None
-        )  # TODO: Why are we using .env and .eval_env?
-        self.eval_env = make_env(
-            cfg, render_mode=None
-        )  # TODO: Why are we using .env and .eval_env?
+        self.config = config
+        self.env = make_env(config, render_mode=None)
+        self.eval_env = make_env(config, render_mode=None)
         self.model = make_model(cfg, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
@@ -80,17 +78,15 @@ class ExperimentRunner:
 
     def predict(self):
         logger.info("Starting prediction...")
-        env = make_env(self.cfg, render_mode="human")
+        env = make_env(self.config, render_mode="human")
 
         try:
-            model = load_model(self.cfg)
+            model = load_model(self.config)
         except Exception as e:
             logger.error(f"Error loading model with model_save_path: {e}")
             return
 
-        logger.info(
-            f"Model loaded from '{self.cfg.get('model_save_path', 'ddpg_simglucose')}'."
-        )
+        logger.info(f"Model loaded from '{self.config.model_save_path}'.")
 
         predict_cfgs = self.cfg.get("predict", {})
         if "predict_steps" in predict_cfgs:
@@ -119,6 +115,6 @@ class ExperimentRunner:
 
             history = env.unwrapped.show_history()
             history.to_csv(
-                f"{self.cfg['run_directory']}/results/predict/{self.cfg['predict']['filename']}.csv"
+                f"{self.config.predict_results_path}{self.config.predict.filename}"
             )
         env.close()

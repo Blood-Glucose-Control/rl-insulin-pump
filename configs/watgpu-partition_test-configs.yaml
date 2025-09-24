@@ -2,7 +2,7 @@ env:
   id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 10000
-  patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
+  patient_name: "all" # Use all available patients, can also be a list of patient names or a single patient name
 seed: 42
 run_directory: "RUN_DIR"
 model_name: "DDPG"
@@ -23,5 +23,5 @@ eval:
 predict:
   prefix: "adolescent#002"
   predict_steps: 20
-device: "gpu"
+device: "cpu"
 mode: ["train", "predict"]

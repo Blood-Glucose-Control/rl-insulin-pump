@@ -4,6 +4,7 @@ from pathlib import Path
 
 from src.environments.multipatient import MultiPatientEnv
 from src.environments.reward_functions import risk_diff_reward_fn
+from src.utils.config import Config
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -30,7 +31,7 @@ def get_default_patients():
     return patients
 
 
-def make_env(cfg, mode="train", render_mode=None):
+def make_env(cfg: Config, mode="train", render_mode=None):
     """Create and return a gym environment wrapped with Monitor.
 
     This function:
@@ -58,24 +59,25 @@ def make_env(cfg, mode="train", render_mode=None):
     else:
         # For single patient, create a list with just that patient
         patient_names = [cfg["env"]["patient_name"]]
+    patient_names = cfg.get_patient_names()
 
     # Create multi-patient environment (works for both single and multiple patients)
     logger.info(f"Creating environment with patients: {patient_names}")
 
     env = MultiPatientEnv(
         patient_names=patient_names,
-        env_id=cfg["env"]["id"],
-        entry_point=cfg["env"]["entry_point"],
-        max_episode_steps=cfg["env"]["max_episode_steps"],
+        env_id=cfg.env.id,
+        entry_point=cfg.env.entry_point,
+        max_episode_steps=cfg.env.max_episode_steps,
         reward_fun=risk_diff_reward_fn,  # TODO: make this configurable
-        seed=cfg["seed"],
+        seed=cfg.seed,
         render_mode=render_mode,
         discrete_action_space=cfg["env"].get("discrete_action_space", False),
         discrete_observation_space=cfg["env"].get("discrete_observation_space", False),
     )
 
     # Add monitoring wrapper for tracking performance
-    log_dir = Path(cfg.get("monitor_log_dir", "monitor_logs/"))
+    log_dir = Path(cfg.monitor_log_dir)
     log_dir.mkdir(parents=True, exist_ok=True)
     env = Monitor(env, filename=str(log_dir))
     return env

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import torch
 from scripts.experiments.network_architecture import (
     grid_search,
     plot_results,
@@ -9,6 +8,7 @@ from scripts.experiments.network_architecture import (
 )
 from src.training.experiment_runner import ExperimentRunner
 from src.utils.cmd_args import parse_args
+from src.utils.config import Config
 import logging
 
 from src.utils.reporting import sg_analyze
@@ -18,51 +18,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def select_device(cfg):
-    """Select device based on availability and configuration."""
-    # Auto-detect if not provided in the config
-    if torch.cuda.is_available():
-        device = "cuda"
-    elif "device" in cfg and cfg["device"]:
-        match cfg["device"]:
-            case "cuda":
-                if torch.cuda.is_available():
-                    device = "cuda"
-                else:
-                    logger.warning("CUDA not available, falling back to CPU.")
-                    device = "cpu"
-            case "mps":
-                if torch.backends.mps.is_available():
-                    device = "mps"
-                else:
-                    logger.warning("MPS not available, falling back to CPU.")
-                    device = "cpu"
-            case "cpu":
-                device = "cpu"
-            case _:
-                logger.error(f"Unknown device '{cfg['device']}'. Falling back to CPU.")
-                device = "cpu"
-    else:
-        device = "cpu"
-    logger.info(f"Using device: {device}")
-    # Update the config so that downstream functions use the correct device
-    cfg["device"] = device
-    return device
-
-
 def main():
     # Parse configuration from YAML
     cfg = parse_args()
+    config = Config(cfg)
     # Set a fixed seed for reproducibility
-    np.random.seed(cfg["seed"])
-
-    # Select device and update the configuration
-    select_device(cfg)
+    np.random.seed(config.seed)
 
     # Decide on the mode based on configuration
-    modes = cfg.get("mode", ["train"])
+    modes = config.mode
 
-    runner = ExperimentRunner(cfg)
+    runner = ExperimentRunner(cfg, config)
 
     for mode in modes:
         mode = mode.lower()
@@ -84,8 +50,8 @@ def main():
             plot_results(results)
         elif mode == "analyze":
             sg_analyze(
-                f"{cfg.get('run_directory', None)}/results/predict/",
-                f"{cfg.get('run_directory', None)}/results/analysis/",
+                config.predict_results_path,
+                config.analysis_results_path,
             )
         else:
             logger.error(
