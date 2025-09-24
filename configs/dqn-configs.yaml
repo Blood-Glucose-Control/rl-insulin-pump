@@ -3,10 +3,12 @@ env:
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 1000
   patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
-  discrete_action_space: False
-  discrete_observation_space: False
+  discrete_action_space: True
+  discrete_observation_space: True
+  discrete_action_step: 0.1
+  discrete_observation_step: 0.1
 seed: 42
-model_name: "DDPG"
+model_name: "DQN"
 action_noise:
   mean: 0
   sigma: 0.25
@@ -25,4 +27,4 @@ eval:
 predict:
   prefix: "adolescent#002"
 device: "cpu"
-mode: ["predict"]
+mode: ["train", "predict"]

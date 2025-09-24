@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def make_model(cfg, env, network_config=None):
-    if cfg["env"].get("discrete_action_space", True):
+    if cfg["env"].get("discrete_action_space", False):
         n_actions = env.action_space.n
     else:
         n_actions = env.action_space.shape[-1]
@@ -22,10 +22,8 @@ def make_model(cfg, env, network_config=None):
 
     policy_kwargs = (
         {"net_arch": [network_config["hidden_units"]] * network_config["n_layers"]}
-        #  "discrete_action_space": model_config.get("discrete_action_space", False), "discrete_observation_space": model_config.get("discrete_observation_space", False)}
         if network_config
         else None
-        #  "discrete_action_space": model_config.get("discrete_action_space", False), "discrete_observation_space": model_config.get("discrete_observation_space", False)}
     )
 
     model_kwargs = {
