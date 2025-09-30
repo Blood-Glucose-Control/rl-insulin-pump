@@ -68,7 +68,7 @@ if [[ -z "$RUN_NAME" ]]; then
 fi
 
 # Create run directory structure
-BASE_DIR="/u6/cjrisi/rl-insulin-pump"
+BASE_DIR="/u201/y329xie/rl-insulin-pump"
 RUN_DIR="$BASE_DIR/runs/$RUN_NAME"
 mkdir -p "$RUN_DIR"/{logs,checkpoints,tensorboard,results,configs,slurm}
 mkdir -p "$RUN_DIR"/results/{train,predict,plots}

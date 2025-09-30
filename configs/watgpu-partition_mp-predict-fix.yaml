@@ -26,3 +26,4 @@ predict:
   prefix: "adolescent#002"
 device: "cpu"
 mode: ["train", "predict"]
+model_save_path: "dqn_simglucose"
