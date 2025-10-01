@@ -92,6 +92,5 @@ def main():
                 f"Unknown mode '{mode}'. Please choose 'train', 'predict', 'analyze', or 'grid_search'."
             )
 
-
 if __name__ == "__main__":
     main()

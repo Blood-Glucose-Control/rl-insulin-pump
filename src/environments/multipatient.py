@@ -32,6 +32,8 @@ class MultiPatientEnv(Wrapper):
         render_mode=None,
         discrete_action_space=False,
         discrete_observation_space=False,
+        discrete_action_step=0.1,
+        discrete_observation_step=0.1
     ):
         """Initialize with a list of patient names.
 
@@ -58,6 +60,8 @@ class MultiPatientEnv(Wrapper):
         self.patient_switch_interval = max_episode_steps  # Switch after this many steps
         self.discrete_action_space = discrete_action_space
         self.discrete_observation_space = discrete_observation_space
+        self.discrete_action_step = discrete_action_step
+        self.discrete_observation_step = discrete_observation_step
 
         # Register and create the first environment
         self._register_current_env()
@@ -116,6 +120,8 @@ class MultiPatientEnv(Wrapper):
             "reward_fun": self.reward_fun,  # The reward function to use
             "discrete_action_space": self.discrete_action_space,
             "discrete_observation_space": self.discrete_observation_space,
+            "discrete_action_step": self.discrete_action_step,
+            "discrete_observation_step": self.discrete_observation_step
         }
 
         try:
