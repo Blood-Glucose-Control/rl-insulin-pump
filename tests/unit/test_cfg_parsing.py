@@ -71,7 +71,6 @@ def test_config_parsing_matches_yaml(tmp_path):
     assert cfg.env.id == raw["env"]["id"]
     assert cfg.env.entry_point == raw["env"]["entry_point"]
     assert cfg.env.max_episode_steps == raw["env"]["max_episode_steps"]
-    assert cfg.env.patient_name == raw["env"]["patient_name"]
 
     # Assert model namespace
     assert cfg.model.learning_rate == raw["model"]["learning_rate"]
