@@ -28,6 +28,7 @@ class EnvConfig:
         patient_names = data.get("patient_name", "all")
         if patient_names == "all":
             from src.environments.env_loader import get_default_patients
+
             self.patient_names = get_default_patients()
         elif isinstance(patient_names, list):
             self.patient_names = patient_names
@@ -52,6 +53,7 @@ class TrainingConfig:
     def __init__(self, data: Dict[str, Any]):
         self.total_timesteps = data.get("total_timesteps", 1000)
         self.checkpoint_freq = data.get("checkpoint_freq", 10000)
+
 
 class EvalConfig:
     """Evaluation configuration namespace."""

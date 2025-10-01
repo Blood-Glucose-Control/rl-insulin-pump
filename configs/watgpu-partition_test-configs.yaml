@@ -14,6 +14,7 @@ model:
   buffer_size: 100000
   batch_size: 256
   gamma: 0.99
+  policy: "MlpPolicy"
 training:
   total_timesteps: 10000
   checkpoint_freq: 1000

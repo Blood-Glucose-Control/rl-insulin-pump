@@ -9,7 +9,7 @@ env:
   id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 10000
-  patient_name: "all" 
+  patient_name: "all"
 seed: 42
 run_directory: "RUN_DIR"
 model_name: "DDPG"
