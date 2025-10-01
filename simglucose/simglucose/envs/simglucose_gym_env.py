@@ -182,7 +182,7 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
         obs, _, _, info = self.env._raw_reset()
         if self.discrete_observation_space:
             return int(obs.CGM*10), info
-        return np.array([obs.CGM], dtype=np.float32), info
+        return obs, info
 
     def render(self):
         if self.render_mode == "human":

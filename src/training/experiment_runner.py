@@ -3,6 +3,8 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
+from simglucose.controller.pid_ctrller import PIDController
+from simglucose.simulation.user_interface import simulate
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -21,31 +23,37 @@ class ExperimentRunner:
         self.model = make_model(cfg, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
-        # Evaluation callback
-        self.callbacks.append(
-            EvalCallback(
-                self.eval_env,
-                best_model_save_path=self.cfg["run_directory"] + "/best_model/",
-                log_path=self.cfg["run_directory"] + "/logs/",
-                eval_freq=self.cfg["eval"]["eval_freq"],
-                n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
-            )
-        )
 
-        # Checkpoint callback
-        self.callbacks.append(
-            CheckpointCallback(
-                save_freq=self.cfg["training"]["checkpoint_freq"],
-                save_path=self.cfg["run_directory"] + "/checkpoints/",
-                name_prefix="ddpg_checkpoint",
+        if self.cfg["model_name"] != "PID":
+            # Evaluation callback
+            self.callbacks.append(
+                EvalCallback(
+                    self.eval_env,
+                    best_model_save_path=self.cfg["run_directory"] + "/best_model/",
+                    log_path=self.cfg["run_directory"] + "/logs/",
+                    eval_freq=self.cfg["eval"]["eval_freq"],
+                    n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
+                )
             )
-        )
 
-        # Patient switch callback
-        switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
-        self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
+            # Checkpoint callback
+            self.callbacks.append(
+                CheckpointCallback(
+                    save_freq=self.cfg["training"]["checkpoint_freq"],
+                    save_path=self.cfg["run_directory"] + "/checkpoints/",
+                    name_prefix="ddpg_checkpoint",
+                )
+            )
+
+            # Patient switch callback
+            switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
+            self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
     def train(self):
+        if self.cfg["model_name"] == "PID":
+            logger.error("Cannot run `train` on PID controller")
+            return AttributeError("PID Controller does not have `learn` method")
+
         logger.info("Starting training...")
         self.model.learn(
             total_timesteps=self.cfg["training"]["total_timesteps"],
@@ -108,7 +116,11 @@ class ExperimentRunner:
             observation, info = env.reset(seed=self.cfg["seed"])
             for t in range(max_steps):
                 env.render()
-                action, _ = model.predict(observation)
+                if self.cfg["model_name"] == "PID":
+                    action = self.model.policy(observation, 0, False, **info)
+                    print('RECEIVED ACTION', action)
+                else:
+                    action, _ = model.predict(observation)
                 observation, reward, terminated, truncated, info = env.step(action)
                 logger.info(
                     f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}"

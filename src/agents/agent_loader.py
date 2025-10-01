@@ -1,4 +1,5 @@
 import numpy as np
+from simglucose.controller.pid_ctrller import PIDController
 from stable_baselines3 import DDPG, PPO, DQN
 from stable_baselines3.common.noise import NormalActionNoise
 import logging
@@ -28,27 +29,8 @@ def make_model(cfg, env, network_config=None):
         #  "discrete_action_space": model_config.get("discrete_action_space", False), "discrete_observation_space": model_config.get("discrete_observation_space", False)}
     )
 
-    model_kwargs = {
-        "policy": model_config[
-            "policy"
-        ],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
-        "env": env,
-        "action_noise": action_noise,
-        "verbose": 1,
-        "device": cfg["device"],
-        "learning_rate": model_config["learning_rate"],
-        "buffer_size": model_config["buffer_size"],
-        "batch_size": model_config["batch_size"],
-        "gamma": model_config["gamma"],
-        "tensorboard_log": cfg["run_directory"] + "/tensorboard/",
-        "policy_kwargs": policy_kwargs,
-    }
-
+    model_kwargs = {}
     match cfg["model_name"]:
-        case "DDPG":
-            return DDPG(**model_kwargs)
-        case "PPO":
-            return PPO(**model_kwargs)
         case "DQN":
             model_kwargs = {
                 "policy": model_config[
@@ -63,7 +45,34 @@ def make_model(cfg, env, network_config=None):
                 "tensorboard_log": cfg["run_directory"] + "/tensorboard/",
                 "policy_kwargs": policy_kwargs,
             }
+        case "PID":
+            model_kwargs = model_config
+        case _:
+            model_kwargs = {
+                "policy": model_config[
+                    "policy"
+                ],  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
+                "env": env,
+                "action_noise": action_noise,
+                "verbose": 1,
+                "device": cfg["device"],
+                "learning_rate": model_config["learning_rate"],
+                "buffer_size": model_config["buffer_size"],
+                "batch_size": model_config["batch_size"],
+                "gamma": model_config["gamma"],
+                "tensorboard_log": cfg["run_directory"] + "/tensorboard/",
+                "policy_kwargs": policy_kwargs,
+            }
+
+    match cfg["model_name"]:
+        case "DDPG":
+            return DDPG(**model_kwargs)
+        case "PPO":
+            return PPO(**model_kwargs)
+        case "DQN":
             return DQN(**model_kwargs)
+        case "PID":
+            return PIDController(**model_config)
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
 
@@ -83,5 +92,7 @@ def load_model(cfg):
             return DQN.load(
                 cfg.get("model_save_path", "dqn_simglucose"), device=cfg["device"]
             )
+        case "PID":
+            return PIDController(**cfg["model"])
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
