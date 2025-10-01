@@ -44,7 +44,6 @@ class TrainingConfig:
         self.total_timesteps = data.get("total_timesteps", 1000)
         self.checkpoint_freq = data.get("checkpoint_freq", 10000)
 
-
 class EvalConfig:
     """Evaluation configuration namespace."""
 
@@ -84,7 +83,7 @@ class Config:
         self.device = data.get("device", "cpu")
         self.model_name = data.get("model_name", "DDPG")
         self.run_directory = data.get("run_directory", "RUN_DIR")
-        self.mode = data.get("mode", "train")
+        self.modes = data.get("modes", ["train"])
         # Default model_save_path based on model_name
         self.model_save_path = data.get(
             "model_save_path", f"{self.model_name.lower()}_simglucose"

@@ -26,7 +26,7 @@ def main():
     np.random.seed(config.seed)
 
     # Decide on the mode based on configuration
-    modes = config.mode
+    modes = config.modes
 
     runner = ExperimentRunner(cfg, config)
 

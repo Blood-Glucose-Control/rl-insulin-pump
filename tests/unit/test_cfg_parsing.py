@@ -9,7 +9,7 @@ env:
   id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 10000
-  patient_name: "all"
+  patient_name: "all" 
 seed: 42
 run_directory: "RUN_DIR"
 model_name: "DDPG"
@@ -32,7 +32,7 @@ predict:
   prefix: "adolescent#002"
   predict_steps: 20
 device: "cpu"
-mode: "train"
+modes: ["predict"]
 """
 
 
@@ -65,7 +65,7 @@ def test_config_parsing_matches_yaml(tmp_path):
     assert cfg.device == raw["device"]
     assert cfg.model_name == raw["model_name"]
     assert cfg.run_directory == raw["run_directory"]
-    assert cfg.mode == raw["mode"]
+    assert cfg.modes == raw["modes"]
 
     # Assert env namespace
     assert cfg.env.id == raw["env"]["id"]

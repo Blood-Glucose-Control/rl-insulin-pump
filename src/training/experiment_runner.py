@@ -16,40 +16,40 @@ class ExperimentRunner:
         self.config = config
         self.env = make_env(config, render_mode=None)
         self.eval_env = make_env(config, render_mode=None)
-        self.model = make_model(cfg, self.env)
+        self.model = make_model(config, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
         # Evaluation callback
         self.callbacks.append(
             EvalCallback(
                 self.eval_env,
-                best_model_save_path=self.cfg["run_directory"] + "/best_model/",
-                log_path=self.cfg["run_directory"] + "/logs/",
-                eval_freq=self.cfg["eval"]["eval_freq"],
-                n_eval_episodes=self.cfg["eval"]["n_eval_episodes"],
+                best_model_save_path=self.config.best_model_path,
+                log_path=self.config.eval_log_path,
+                eval_freq=self.config.eval.eval_freq,
+                n_eval_episodes=self.config.eval.n_eval_episodes,
             )
         )
 
         # Checkpoint callback
         self.callbacks.append(
             CheckpointCallback(
-                save_freq=self.cfg["training"]["checkpoint_freq"],
-                save_path=self.cfg["run_directory"] + "/checkpoints/",
-                name_prefix="ddpg_checkpoint",
+                save_freq=self.config.training.checkpoint_freq,
+                save_path=self.config.checkpoint_path,
+                name_prefix=f"{self.config.model_name}_checkpoint",
             )
         )
 
         # Patient switch callback
-        switch_freq = min(500, self.cfg["training"]["total_timesteps"] // 10)
+        switch_freq = min(500, self.config.training.total_timesteps // 10)
         self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
     def train(self):
         logger.info("Starting training...")
         self.model.learn(
-            total_timesteps=self.cfg["training"]["total_timesteps"],
+            total_timesteps=self.config.training.total_timesteps,
             callback=self.callbacks,
         )
-        model_path = self.cfg.get("model_save_path", "ddpg_simglucose")
+        model_path = self.config.model_save_path
         self.model.save(model_path)
         logger.info(f"Model saved as '{model_path}'.")
 
