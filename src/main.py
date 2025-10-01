@@ -20,15 +20,14 @@ logger = logging.getLogger(__name__)
 
 def main():
     # Parse configuration from YAML
-    cfg = parse_args()
-    config = Config(cfg)
+    cfg = Config(parse_args())
     # Set a fixed seed for reproducibility
-    np.random.seed(config.seed)
+    np.random.seed(cfg.seed)
 
     # Decide on the mode based on configuration
-    modes = config.modes
+    modes = cfg.modes
 
-    runner = ExperimentRunner(cfg, config)
+    runner = ExperimentRunner(cfg)
 
     for mode in modes:
         mode = mode.lower()
@@ -43,15 +42,15 @@ def main():
             runner.predict()
         elif mode == "grid_search":
             # Run grid search over network configurations
-            results = grid_search()
+            results = grid_search(cfg)
             # Visualize and save results
             visualize_results(results)
             # Also print results to console
             plot_results(results)
         elif mode == "analyze":
             sg_analyze(
-                config.predict_results_path,
-                config.analysis_results_path,
+                cfg.predict_results_path,
+                cfg.analysis_results_path,
             )
         else:
             logger.error(

@@ -151,7 +151,7 @@ class Config:
 
     def __str__(self) -> str:
         """String representation of config."""
-        return f"Config(model_name={self.model_name}, device={self.device}, mode={self.mode})"
+        return f"Config(model_name={self.model_name}, device={self.device}, modes={self.modes})"
 
     def __repr__(self) -> str:
         """Detailed representation of config."""

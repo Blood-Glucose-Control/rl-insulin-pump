@@ -11,51 +11,50 @@ logger = logging.getLogger(__name__)
 
 
 class ExperimentRunner:
-    def __init__(self, cfg, config: Config, callbacks=None):
+    def __init__(self, cfg: Config, callbacks=None):
         self.cfg = cfg
-        self.config = config
-        self.env = make_env(config, render_mode=None)
-        self.eval_env = make_env(config, render_mode=None)
-        self.model = make_model(config, self.env)
+        self.env = make_env(cfg, render_mode=None)
+        self.eval_env = make_env(cfg, render_mode=None)
+        self.model = make_model(cfg, self.env)
 
         self.callbacks = [callbacks] if callbacks else []
         # Evaluation callback
         self.callbacks.append(
             EvalCallback(
                 self.eval_env,
-                best_model_save_path=self.config.best_model_path,
-                log_path=self.config.eval_log_path,
-                eval_freq=self.config.eval.eval_freq,
-                n_eval_episodes=self.config.eval.n_eval_episodes,
+                best_model_save_path=self.cfg.best_model_path,
+                log_path=self.cfg.eval_log_path,
+                eval_freq=self.cfg.eval.eval_freq,
+                n_eval_episodes=self.cfg.eval.n_eval_episodes,
             )
         )
 
         # Checkpoint callback
         self.callbacks.append(
             CheckpointCallback(
-                save_freq=self.config.training.checkpoint_freq,
-                save_path=self.config.checkpoint_path,
-                name_prefix=f"{self.config.model_name}_checkpoint",
+                save_freq=self.cfg.training.checkpoint_freq,
+                save_path=self.cfg.checkpoint_path,
+                name_prefix=f"{self.cfg.model_name}_checkpoint",
             )
         )
 
         # Patient switch callback
-        switch_freq = min(500, self.config.training.total_timesteps // 10)
+        switch_freq = min(500, self.cfg.training.total_timesteps // 10)
         self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
     def train(self):
         logger.info("Starting training...")
         self.model.learn(
-            total_timesteps=self.config.training.total_timesteps,
+            total_timesteps=self.cfg.training.total_timesteps,
             callback=self.callbacks,
         )
-        model_path = self.config.model_save_path
+        model_path = self.cfg.model_save_path
         self.model.save(model_path)
         logger.info(f"Model saved as '{model_path}'.")
 
     def multi_patient_predict(self, env, model, max_steps=40):
         for patient in env.patient_names:
-            observation, info = env.reset(seed=self.config.seed)
+            observation, info = env.reset(seed=self.cfg.seed)
             logger.info(f"Starting prediction for patient {patient}...")
             for t in range(max_steps):
                 env.render()
@@ -73,22 +72,22 @@ class ExperimentRunner:
                     break
             history = env.unwrapped.show_history()
             history.to_csv(
-                f"{self.config.run_directory}/results/predict/{patient}_predict.csv"
+                f"{self.cfg.run_directory}/results/predict/{patient}_predict.csv"
             )
 
     def predict(self):
         logger.info("Starting prediction...")
-        env = make_env(self.config, render_mode="human")
+        env = make_env(self.cfg, render_mode="human")
 
         try:
-            model = load_model(self.config)
+            model = load_model(self.cfg)
         except Exception as e:
             logger.error(f"Error loading model with model_save_path: {e}")
             return
 
-        logger.info(f"Model loaded from '{self.config.model_save_path}'.")
+        logger.info(f"Model loaded from '{self.cfg.model_save_path}'.")
 
-        max_steps = self.config.predict.predict_steps
+        max_steps = self.cfg.predict.predict_steps
         logger.info(f"Running prediction for {max_steps} steps...")
         self.multi_patient_predict(env, model, max_steps)
         env.close()

@@ -5,6 +5,8 @@ from pathlib import Path
 from stable_baselines3.common.evaluation import evaluate_policy
 import matplotlib.pyplot as plt
 
+from src.utils.config import Config
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,7 +16,7 @@ def create_network_config(n_layers, hidden_units):
     return {"n_layers": n_layers, "hidden_units": hidden_units, "activation_fn": "relu"}
 
 
-def evaluate_network(cfg, network_config):
+def evaluate_network(cfg: Config, network_config):
     """Evaluate a specific network architecture."""
     logger.info(
         f"Evaluating network with {network_config['n_layers']} layers and {network_config['hidden_units']} units"
@@ -29,7 +31,7 @@ def evaluate_network(cfg, network_config):
 
     # Train and evaluate
     mean_reward, std_reward = evaluate_policy(
-        model, eval_env, n_eval_episodes=cfg["eval"]["n_eval_episodes"]
+        model, eval_env, n_eval_episodes=cfg.eval.n_eval_episodes
     )
 
     return {
@@ -39,7 +41,7 @@ def evaluate_network(cfg, network_config):
     }
 
 
-def grid_search(cfg):
+def grid_search(cfg: Config):
     """Run grid search over network configurations."""
     results = []
 
