@@ -5,7 +5,7 @@ This module provides a simple wrapper around the existing dictionary-based
 config system to provide a cleaner interface without breaking changes.
 """
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Union
 from pathlib import Path
 import yaml
 import logging
@@ -21,9 +21,18 @@ class EnvConfig:
         self.id = data.get("id", "simglucose/multi-patient-v0")
         self.entry_point = data.get("entry_point", "simglucose.envs:T1DSimGymnaisumEnv")
         self.max_episode_steps = data.get("max_episode_steps", 1000)
-        self.patient_name = data.get("patient_name", "all")
         self.discrete_action_space = data.get("discrete_action_space", False)
         self.discrete_observation_space = data.get("discrete_observation_space", False)
+
+        # Normalize patient_name to always be a list
+        patient_names = data.get("patient_name", "all")
+        if patient_names == "all":
+            from src.environments.env_loader import get_default_patients
+            self.patient_names = get_default_patients()
+        elif isinstance(patient_names, list):
+            self.patient_names = patient_names
+        else:
+            self.patient_names = [patient_names]
 
 
 class ModelConfig:
@@ -57,7 +66,7 @@ class PredictConfig:
 
     def __init__(self, data: Dict[str, Any]):
         self.prefix = data.get("prefix", "prediction")
-        self.predict_steps = data.get("predict_steps", 20)
+        self.predict_steps = data.get("predict_steps", 40)
         self.filename = data.get("filename", "glucose_history")
         if not self.filename.endswith(".csv"):
             self.filename = f"{self.filename}.csv"
@@ -147,18 +156,6 @@ class Config:
     def __repr__(self) -> str:
         """Detailed representation of config."""
         return f"Config(seed={self.seed}, device={self.device}, model_name={self.model_name}, run_directory={self.run_directory})"
-
-    def get_patient_names(self) -> List[str]:
-        """Get list of patient names, handling 'all' case."""
-        from src.environments.env_loader import get_default_patients
-
-        patient_name = self.env.patient_name
-        if patient_name == "all":
-            return get_default_patients()
-        elif isinstance(patient_name, list):
-            return patient_name
-        else:
-            return [patient_name]
 
     def _validate_device(self):
         """Validate the device configuration."""

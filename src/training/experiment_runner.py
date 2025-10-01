@@ -55,7 +55,7 @@ class ExperimentRunner:
 
     def multi_patient_predict(self, env, model, max_steps=40):
         for patient in env.patient_names:
-            observation, info = env.reset(seed=self.cfg["seed"])
+            observation, info = env.reset(seed=self.config.seed)
             logger.info(f"Starting prediction for patient {patient}...")
             for t in range(max_steps):
                 env.render()
@@ -73,7 +73,7 @@ class ExperimentRunner:
                     break
             history = env.unwrapped.show_history()
             history.to_csv(
-                f"{self.cfg['run_directory']}/results/predict/{patient}_predict.csv"
+                f"{self.config.run_directory}/results/predict/{patient}_predict.csv"
             )
 
     def predict(self):
@@ -88,33 +88,7 @@ class ExperimentRunner:
 
         logger.info(f"Model loaded from '{self.config.model_save_path}'.")
 
-        predict_cfgs = self.cfg.get("predict", {})
-        if "predict_steps" in predict_cfgs:
-            max_steps = predict_cfgs["predict_steps"]
-        else:
-            max_steps = 40
-            logger.info(f"Running prediction for default {max_steps} steps...")
+        max_steps = self.config.predict.predict_steps
         logger.info(f"Running prediction for {max_steps} steps...")
-
-        if self.cfg["env"]["patient_name"] == "all" or isinstance(
-            self.cfg["env"]["patient_name"], list
-        ):
-            self.multi_patient_predict(env, model, max_steps)
-        else:
-            observation, info = env.reset(seed=self.cfg["seed"])
-            for t in range(max_steps):
-                env.render()
-                action, _ = model.predict(observation)
-                observation, reward, terminated, truncated, info = env.step(action)
-                logger.info(
-                    f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}"
-                )
-                if terminated or truncated:
-                    logger.info("Episode finished after {} timesteps".format(t + 1))
-                    break
-
-            history = env.unwrapped.show_history()
-            history.to_csv(
-                f"{self.config.predict_results_path}{self.config.predict.filename}"
-            )
+        self.multi_patient_predict(env, model, max_steps)
         env.close()

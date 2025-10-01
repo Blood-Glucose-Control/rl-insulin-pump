@@ -48,18 +48,8 @@ def make_env(cfg: Config, mode="train", render_mode=None):
     Returns:
         A properly configured environment for training or evaluation
     """
-    # Handle patient selection based on config
-    if cfg["env"]["patient_name"] == "all":
-        # Use all available default patients
-        patient_names = get_default_patients()
-        logger.info(f"Using all default patients for {mode}ing.")
-    elif isinstance(cfg["env"]["patient_name"], list):
-        # Use explicitly listed patients
-        patient_names = cfg["env"]["patient_name"]
-    else:
-        # For single patient, create a list with just that patient
-        patient_names = [cfg["env"]["patient_name"]]
-    patient_names = cfg.get_patient_names()
+    # Patient names are already normalized to a list in EnvConfig
+    patient_names = cfg.env.patient_names
 
     # Create multi-patient environment (works for both single and multiple patients)
     logger.info(f"Creating environment with patients: {patient_names}")
