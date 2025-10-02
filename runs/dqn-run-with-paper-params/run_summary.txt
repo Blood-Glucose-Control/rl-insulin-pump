@@ -1,0 +1,26 @@
+Training Run: dqn-run-with-paper-params
+Created: Wed Oct  1 11:50:01 PM UTC 2025
+Configuration: dqn-configs-paper.yaml
+Original config: ./configs/dqn-configs-paper.yaml
+
+SLURM Settings:
+- Time limit: 03:00:00
+- Memory: 8G
+- CPUs: 4
+- GPU: gpu:1
+- Partition: HI
+
+Directory Structure:
+- Run directory: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params
+- Logs: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/logs/
+- Checkpoints: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/checkpoints/
+- TensorBoard: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/tensorboard/
+- Results: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/results/
+- SLURM logs: /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/slurm/
+
+To monitor the job:
+- squeue -u y329xie
+- tail -f /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/slurm/slurm-*.out
+
+To view TensorBoard:
+- tensorboard --logdir /u201/y329xie/rl-insulin-pump/runs/dqn-run-with-paper-params/tensorboard/
