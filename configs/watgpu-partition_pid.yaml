@@ -2,7 +2,7 @@ env:
   id: "simglucose/multi-patient-v0"
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 1000
-  patient_name: "adolescent#002"  # Use all available patients, can also be a list of patient names or a single patient name
+  patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
   discrete_action_space: False
   discrete_observation_space: False
 seed: 42

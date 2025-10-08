@@ -1,14 +1,15 @@
+from collections import namedtuple
 import logging
 from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
-from simglucose.simulation.user_interface import simulate
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+Observation = namedtuple("Observation", ["CGM"])
 
 class ExperimentRunner:
     def __init__(self, cfg, callbacks=None):
@@ -49,9 +50,10 @@ class ExperimentRunner:
             self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
 
     def train(self):
-        if self.cfg["model_name"] == "PID":
-            logger.error("Cannot run `train` on PID controller")
-            return AttributeError("PID Controller does not have `learn` method")
+        model_name = self.cfg["model_name"]
+        if model_name == "PID":
+            logger.error(f"Cannot run `train` on {model_name} controller")
+            return AttributeError(f"{model_name} Controller does not have `learn` method")
 
         logger.info("Starting training...")
         self.model.learn(
@@ -68,7 +70,11 @@ class ExperimentRunner:
             logger.info(f"Starting prediction for patient {patient}...")
             for t in range(max_steps):
                 env.render()
-                action, _ = model.predict(observation)
+                if self.cfg["model_name"] == "PID":
+                    obs = Observation(CGM=observation[0]) # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
+                    action = self.model.policy(obs, 0, False, **info).basal # Simglucose controllers (PID and BBC) return 
+                else:
+                    action, _ = model.predict(observation)
                 observation, reward, terminated, truncated, info = env.step(action)
                 logger.info(
                     f"Step {t}: obs {observation}, reward {reward}, term {terminated}, trunc {truncated}, info {info}"
@@ -116,8 +122,8 @@ class ExperimentRunner:
             for t in range(max_steps):
                 env.render()
                 if self.cfg["model_name"] == "PID":
-                    action = self.model.policy(observation, 0, False, **info).basal
-                    print('RECEIVED ACTION', action)
+                    obs = Observation(CGM=observation[0]) # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
+                    action = self.model.policy(obs, 0, False, **info).basal # Simglucose controllers (PID and BBC) return 
                 else:
                     action, _ = model.predict(observation)
                 observation, reward, terminated, truncated, info = env.step(action)
