@@ -24,7 +24,7 @@ class ExperimentRunner:
 
         self.callbacks = [callbacks] if callbacks else []
 
-        if self.cfg["model_name"] != "PID":
+        if self.cfg["model_name"] not in ["PID", "BB"]:
             # Evaluation callback
             self.callbacks.append(
                 EvalCallback(
@@ -51,7 +51,7 @@ class ExperimentRunner:
 
     def train(self):
         model_name = self.cfg["model_name"]
-        if model_name == "PID":
+        if model_name in ["PID", "BB"]:
             logger.error(f"Cannot run `train` on {model_name} controller")
             return AttributeError(f"{model_name} Controller does not have `learn` method")
 
@@ -70,9 +70,10 @@ class ExperimentRunner:
             logger.info(f"Starting prediction for patient {patient}...")
             for t in range(max_steps):
                 env.render()
-                if self.cfg["model_name"] == "PID":
+                if self.cfg["model_name"] in ["PID", "BB"]:
                     obs = Observation(CGM=observation[0]) # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
-                    action = self.model.policy(obs, 0, False, **info).basal # Simglucose controllers (PID and BBC) return 
+                    action = self.model.policy(obs, 0, False, **info)
+                    action = action.basal + action.bolus
                 else:
                     action, _ = model.predict(observation)
                 observation, reward, terminated, truncated, info = env.step(action)
@@ -121,9 +122,10 @@ class ExperimentRunner:
             observation, info = env.reset(seed=self.cfg["seed"])
             for t in range(max_steps):
                 env.render()
-                if self.cfg["model_name"] == "PID":
+                if self.cfg["model_name"] in ["PID", "BB"]:
                     obs = Observation(CGM=observation[0]) # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
-                    action = self.model.policy(obs, 0, False, **info).basal # Simglucose controllers (PID and BBC) return 
+                    action = self.model.policy(obs, 0, False, **info)
+                    action = action.basal + action.bolus
                 else:
                     action, _ = model.predict(observation)
                 observation, reward, terminated, truncated, info = env.step(action)

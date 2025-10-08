@@ -1,4 +1,5 @@
 import numpy as np
+from simglucose.controller.basal_bolus_ctrller import BBController
 from simglucose.controller.pid_ctrller import PIDController
 from stable_baselines3 import DDPG, PPO, DQN
 from stable_baselines3.common.noise import NormalActionNoise
@@ -47,6 +48,8 @@ def make_model(cfg, env, network_config=None):
             }
         case "PID":
             model_kwargs = model_config
+        case "BB":
+            model_kwargs = model_config
         case _:
             model_kwargs = {
                 "policy": model_config[
@@ -73,6 +76,8 @@ def make_model(cfg, env, network_config=None):
             return DQN(**model_kwargs)
         case "PID":
             return PIDController(**model_config)
+        case "BB":
+            return BBController(**model_config)
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
 
@@ -94,5 +99,7 @@ def load_model(cfg):
             )
         case "PID":
             return PIDController(**cfg["model"])
+        case "BB":
+            return BBController(**cfg["model"])
         case _:
             raise ValueError(f"Unknown model name: {cfg['model_name']}")
