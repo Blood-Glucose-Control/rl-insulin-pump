@@ -3,7 +3,6 @@ from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
 from src.agents.agent_loader import make_model, load_model
-from simglucose.controller.pid_ctrller import PIDController
 from simglucose.simulation.user_interface import simulate
 
 # Set up logging
@@ -117,7 +116,7 @@ class ExperimentRunner:
             for t in range(max_steps):
                 env.render()
                 if self.cfg["model_name"] == "PID":
-                    action = self.model.policy(observation, 0, False, **info)
+                    action = self.model.policy(observation, 0, False, **info).basal
                     print('RECEIVED ACTION', action)
                 else:
                     action, _ = model.predict(observation)
