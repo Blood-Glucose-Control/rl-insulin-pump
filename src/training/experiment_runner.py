@@ -52,7 +52,21 @@ class ExperimentRunner:
         self.model.save(model_path)
         logger.info(f"Model saved as '{model_path}'.")
 
-    def multi_patient_predict(self, env, model, max_steps=40):
+    def predict(self):
+        logger.info("Starting prediction...")
+        env = make_env(self.cfg, render_mode="human")
+
+        try:
+            model = load_model(self.cfg)
+        except Exception as e:
+            logger.error(f"Error loading model with model_save_path: {e}")
+            return
+
+        logger.info(f"Model loaded from '{self.cfg.model_save_path}'.")
+
+        max_steps = self.cfg.predict.predict_steps
+        logger.info(f"Running prediction for {max_steps} steps...")
+
         for patient in env.patient_names:
             observation, info = env.reset(seed=self.cfg.seed)
             logger.info(f"Starting prediction for patient {patient}...")
@@ -75,19 +89,4 @@ class ExperimentRunner:
                 f"{self.cfg.run_directory}/results/predict/{patient}_predict.csv"
             )
 
-    def predict(self):
-        logger.info("Starting prediction...")
-        env = make_env(self.cfg, render_mode="human")
-
-        try:
-            model = load_model(self.cfg)
-        except Exception as e:
-            logger.error(f"Error loading model with model_save_path: {e}")
-            return
-
-        logger.info(f"Model loaded from '{self.cfg.model_save_path}'.")
-
-        max_steps = self.cfg.predict.predict_steps
-        logger.info(f"Running prediction for {max_steps} steps...")
-        self.multi_patient_predict(env, model, max_steps)
         env.close()

@@ -62,8 +62,8 @@ def make_env(cfg: Config, mode="train", render_mode=None):
         reward_fun=risk_diff_reward_fn,  # TODO: make this configurable
         seed=cfg.seed,
         render_mode=render_mode,
-        discrete_action_space=cfg["env"].get("discrete_action_space", False),
-        discrete_observation_space=cfg["env"].get("discrete_observation_space", False),
+        discrete_action_space=cfg.env.discrete_action_space,
+        discrete_observation_space=cfg.env.discrete_observation_space
     )
 
     # Add monitoring wrapper for tracking performance
