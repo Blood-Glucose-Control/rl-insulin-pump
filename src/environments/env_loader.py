@@ -4,6 +4,7 @@ from pathlib import Path
 
 from src.environments.multipatient import MultiPatientEnv
 from src.environments.reward_functions import risk_diff_reward_fn
+from src.utils.config import Config
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -30,7 +31,7 @@ def get_default_patients():
     return patients
 
 
-def make_env(cfg, mode="train", render_mode=None):
+def make_env(cfg: Config, mode="train", render_mode=None):
     """Create and return a gym environment wrapped with Monitor.
 
     This function:
@@ -47,35 +48,26 @@ def make_env(cfg, mode="train", render_mode=None):
     Returns:
         A properly configured environment for training or evaluation
     """
-    # Handle patient selection based on config
-    if cfg["env"]["patient_name"] == "all":
-        # Use all available default patients
-        patient_names = get_default_patients()
-        logger.info(f"Using all default patients for {mode}ing.")
-    elif isinstance(cfg["env"]["patient_name"], list):
-        # Use explicitly listed patients
-        patient_names = cfg["env"]["patient_name"]
-    else:
-        # For single patient, create a list with just that patient
-        patient_names = [cfg["env"]["patient_name"]]
+    # Patient names are already normalized to a list in EnvConfig
+    patient_names = cfg.env.patient_names
 
     # Create multi-patient environment (works for both single and multiple patients)
     logger.info(f"Creating environment with patients: {patient_names}")
 
     env = MultiPatientEnv(
         patient_names=patient_names,
-        env_id=cfg["env"]["id"],
-        entry_point=cfg["env"]["entry_point"],
-        max_episode_steps=cfg["env"]["max_episode_steps"],
+        env_id=cfg.env.id,
+        entry_point=cfg.env.entry_point,
+        max_episode_steps=cfg.env.max_episode_steps,
         reward_fun=risk_diff_reward_fn,  # TODO: make this configurable
-        seed=cfg["seed"],
+        seed=cfg.seed,
         render_mode=render_mode,
-        discrete_action_space=cfg["env"].get("discrete_action_space", False),
-        discrete_observation_space=cfg["env"].get("discrete_observation_space", False),
+        discrete_action_space=cfg.env.discrete_action_space,
+        discrete_observation_space=cfg.env.discrete_observation_space,
     )
 
     # Add monitoring wrapper for tracking performance
-    log_dir = Path(cfg.get("monitor_log_dir", "monitor_logs/"))
+    log_dir = Path(cfg.monitor_log_dir)
     log_dir.mkdir(parents=True, exist_ok=True)
     env = Monitor(env, filename=str(log_dir))
     return env
