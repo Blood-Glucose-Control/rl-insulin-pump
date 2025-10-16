@@ -15,6 +15,8 @@ model:
 eval:
   eval_freq: 5000
   n_eval_episodes: 5
+predict:
+  predict_steps: 1000
 device: "cpu"
 run_directory: "./runs/local_bb"
 mode: ["predict", "analyze"]
