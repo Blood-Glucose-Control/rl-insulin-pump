@@ -11,13 +11,15 @@ action_noise:
   mean: 0
   sigma: 0.25
 model:
-  P: 1
+  P: 0.0005
   I: 0
-  D: 0
+  D: 0.05
   target: 140
 eval:
   eval_freq: 5000
   n_eval_episodes: 5
 device: "cpu"
+predict:
+  predict_steps: 1000
 run_directory: "./runs/local_pid"
 mode: ["predict", "analyze"]
