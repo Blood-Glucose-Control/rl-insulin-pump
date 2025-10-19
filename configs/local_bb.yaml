@@ -11,7 +11,8 @@ action_noise:
   mean: 0
   sigma: 0.25
 model:
-  target: 140
+  kwargs:
+    target: 140
 eval:
   eval_freq: 5000
   n_eval_episodes: 5

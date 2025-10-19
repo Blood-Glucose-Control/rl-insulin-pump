@@ -52,9 +52,9 @@ def make_model(cfg: Config, env, network_config=None):
         case "DQN":
             return DQN(**model_kwargs)
         case "PID":
-            return PIDController(**cfg.model)
+            return PIDController(**cfg.model.kwargs)
         case "BB":
-            return BBController(**cfg.model)
+            return BBController(**cfg.model.kwargs)
         case _:
             raise ValueError(f"Unknown model name: {cfg.model_name}")
 
@@ -69,8 +69,8 @@ def load_model(cfg: Config):
         case "DQN":
             return DQN.load(cfg.model_save_path, device=cfg.device)
         case "PID":
-            return PIDController(**cfg.model)
+            return PIDController(**cfg.model.kwargs)
         case "BB":
-            return BBController(**cfg.model)
+            return BBController(**cfg.model.kwargs)
         case _:
             raise ValueError(f"Unknown model name: {cfg.model_name}")

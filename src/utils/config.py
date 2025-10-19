@@ -45,6 +45,7 @@ class ModelConfig:
         self.buffer_size = data.get("buffer_size", 100000)
         self.batch_size = data.get("batch_size", 256)
         self.gamma = data.get("gamma", 0.99)
+        self.kwargs = data.get("kwargs", {})
 
 
 class TrainingConfig:
@@ -94,7 +95,7 @@ class Config:
         self.device = data.get("device", "cpu")
         self.model_name = data.get("model_name", "DDPG")
         self.run_directory = data.get("run_directory", "RUN_DIR")
-        self.modes = data.get("modes", ["train"])
+        self.modes = data.get("mode", ["train"])
         # Default model_save_path based on model_name
         self.model_save_path = data.get(
             "model_save_path", f"{self.model_name.lower()}_simglucose"
