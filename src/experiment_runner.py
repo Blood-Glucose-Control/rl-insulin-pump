@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 Observation = namedtuple("Observation", ["CGM"])
 
+
 class ExperimentRunner:
     def __init__(self, cfg: Config, callbacks=None):
         self.cfg = cfg
@@ -43,13 +44,17 @@ class ExperimentRunner:
 
             # Patient switch callback
             switch_freq = min(500, self.cfg.training.total_timesteps // 10)
-            self.callbacks.append(PatientSwitchCallback(self.env, switch_freq=switch_freq))
+            self.callbacks.append(
+                PatientSwitchCallback(self.env, switch_freq=switch_freq)
+            )
 
     def train(self):
         model_name = self.cfg.model_name
         if model_name in ["PID", "BB"]:
             logger.error(f"Cannot run `train` on {model_name} controller")
-            return AttributeError(f"{model_name} Controller does not have `learn` method")
+            return AttributeError(
+                f"{model_name} Controller does not have `learn` method"
+            )
 
         logger.info("Starting training...")
         self.model.learn(
@@ -81,7 +86,9 @@ class ExperimentRunner:
             for t in range(max_steps):
                 env.render()
                 if self.cfg.model_name in ["PID", "BB"]:
-                    obs = Observation(CGM=observation[0]) # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
+                    obs = Observation(
+                        CGM=observation[0]
+                    )  # Simglucose controllers (PID and BBC) expect observation to be an Observation instance
                     action = self.model.policy(obs, 0, False, **info)
                     action = action.basal + action.bolus
                 else:
