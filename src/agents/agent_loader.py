@@ -50,6 +50,9 @@ def make_model(cfg: Config, env, network_config=None):
         case "PPO":
             return PPO(**model_kwargs)
         case "DQN":
+            model_kwargs = {
+                k: v for k, v in model_kwargs.items() if k != "action_noise"
+            }
             return DQN(**model_kwargs)
         case "PID":
             return PIDController(**cfg.model.kwargs)
