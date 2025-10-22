@@ -65,7 +65,7 @@ def test_config_parsing_matches_yaml(tmp_path):
     assert cfg.device == raw["device"]
     assert cfg.model_name == raw["model_name"]
     assert cfg.run_directory == raw["run_directory"]
-    assert cfg.modes == raw["modes"]
+    assert cfg.modes == raw["mode"]
 
     # Assert env namespace
     assert cfg.env.id == raw["env"]["id"]
