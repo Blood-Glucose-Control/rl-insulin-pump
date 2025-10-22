@@ -20,4 +20,4 @@ predict:
   predict_steps: 1000
 device: "cpu"
 run_directory: "./runs/local_bb"
-mode: ["predict", "analyze"]
+modes: ["predict", "analyze"]

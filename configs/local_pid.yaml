@@ -23,4 +23,4 @@ device: "cpu"
 predict:
   predict_steps: 1000
 run_directory: "./runs/local_pid"
-mode: ["predict", "analyze"]
+modes: ["predict", "analyze"]

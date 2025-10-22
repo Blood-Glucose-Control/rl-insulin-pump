@@ -25,4 +25,4 @@ predict:
   prefix: "adolescent#002"
   predict_steps: 20
 device: "cpu"
-mode: ["train", "predict"]
+modes: ["train", "predict"]
