@@ -1,5 +1,5 @@
-from collections import namedtuple
 import logging
+from simglucose.simulation.env import Observation
 from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback
 from src.training.callbacks.patient_switch import PatientSwitchCallback
 from src.environments.env_loader import make_env
@@ -9,8 +9,6 @@ from src.utils.config import Config
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-Observation = namedtuple("Observation", ["CGM"])
 
 
 class ExperimentRunner:
