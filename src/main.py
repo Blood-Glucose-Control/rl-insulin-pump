@@ -6,7 +6,7 @@ from scripts.experiments.network_architecture import (
     plot_results,
     visualize_results,
 )
-from src.training.experiment_runner import ExperimentRunner
+from src.experiment_runner import ExperimentRunner
 from src.utils.cmd_args import parse_args
 from src.utils.config import Config
 import logging
