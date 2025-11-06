@@ -64,6 +64,7 @@ def make_env(cfg: Config, mode="train", render_mode=None):
         render_mode=render_mode,
         discrete_action_space=cfg.env.discrete_action_space,
         discrete_observation_space=cfg.env.discrete_observation_space,
+        include_carb_announcement=cfg.env.include_carb_announcement,
     )
 
     # Add monitoring wrapper for tracking performance

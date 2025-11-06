@@ -23,6 +23,7 @@ class EnvConfig:
         self.max_episode_steps = data.get("max_episode_steps", 1000)
         self.discrete_action_space = data.get("discrete_action_space", False)
         self.discrete_observation_space = data.get("discrete_observation_space", False)
+        self.include_carb_announcement = data.get("include_carb_announcement", False)
 
         # Normalize patient_name to always be a list
         patient_names = data.get("patient_name", "all")

@@ -10,6 +10,7 @@ env:
   entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
   max_episode_steps: 10000
   patient_name: "all"
+  include_carb_announcement: True
 seed: 42
 run_directory: "RUN_DIR"
 model_name: "DDPG"
@@ -71,6 +72,7 @@ def test_config_parsing_matches_yaml(tmp_path):
     assert cfg.env.id == raw["env"]["id"]
     assert cfg.env.entry_point == raw["env"]["entry_point"]
     assert cfg.env.max_episode_steps == raw["env"]["max_episode_steps"]
+    assert cfg.env.include_carb_announcement == raw["env"]["include_carb_announcement"]
 
     # Assert model namespace
     assert cfg.model.learning_rate == raw["model"]["learning_rate"]
