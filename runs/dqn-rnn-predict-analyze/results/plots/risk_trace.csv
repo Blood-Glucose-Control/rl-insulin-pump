@@ -1,0 +1,91 @@
+,,0
+LBGI,child#005_predict,21.38389175224136
+LBGI,adolescent#001_predict,3.6292752224809255
+LBGI,adult#004_predict,5.623730221508145
+LBGI,child#008_predict,37.97220311379137
+LBGI,child#007_predict,6.737171613156893
+LBGI,adult#009_predict,0.7666774759636366
+LBGI,adult#006_predict,21.50138650322548
+LBGI,adolescent#003_predict,8.145241399879131
+LBGI,adolescent#005_predict,18.135380013463692
+LBGI,adult#010_predict,20.652710663441276
+LBGI,child#001_predict,21.86968425028625
+LBGI,adult#002_predict,10.17503725940925
+LBGI,adolescent#008_predict,15.499552747553759
+LBGI,adolescent#007_predict,2.022743880635407
+LBGI,child#003_predict,38.77387293574706
+LBGI,child#010_predict,2.1087465440475435
+LBGI,adult#001_predict,3.7679153847278655
+LBGI,adolescent#004_predict,15.33968426046757
+LBGI,child#002_predict,14.332849156547397
+LBGI,adolescent#006_predict,2.1994592575521805
+LBGI,adolescent#009_predict,36.136544649006126
+LBGI,adult#003_predict,16.949726870007183
+LBGI,adult#005_predict,5.469994554190697
+LBGI,adolescent#010_predict,1.191887499280453
+LBGI,child#004_predict,21.786063051126735
+LBGI,adolescent#002_predict,37.59916619676037
+LBGI,adult#007_predict,5.704282990465134
+LBGI,adult#008_predict,2.3990850346859682
+LBGI,child#006_predict,9.49239414546236
+LBGI,child#009_predict,13.454260981087447
+HBGI,child#005_predict,0.5575958077435071
+HBGI,adolescent#001_predict,1.347935384687832
+HBGI,adult#004_predict,0.8374676133028768
+HBGI,child#008_predict,0.3568690697994447
+HBGI,child#007_predict,1.0888036904129095
+HBGI,adult#009_predict,1.6347040580975367
+HBGI,adult#006_predict,0.38874780736701076
+HBGI,adolescent#003_predict,0.8333728963181543
+HBGI,adolescent#005_predict,0.3585229376571368
+HBGI,adult#010_predict,0.5088351195707195
+HBGI,child#001_predict,0.5771647489380107
+HBGI,adult#002_predict,0.9112840496811166
+HBGI,adolescent#008_predict,0.48982600821969025
+HBGI,adolescent#007_predict,0.9548219626850736
+HBGI,child#003_predict,0.24081938848104464
+HBGI,child#010_predict,1.2808680890333453
+HBGI,adult#001_predict,0.5226384816750602
+HBGI,adolescent#004_predict,0.5514117362339646
+HBGI,child#002_predict,0.2940953525286171
+HBGI,adolescent#006_predict,0.9590625932300062
+HBGI,adolescent#009_predict,0.7084661678350074
+HBGI,adult#003_predict,1.0026240948241738
+HBGI,adult#005_predict,0.48672438504447424
+HBGI,adolescent#010_predict,0.7657621991890038
+HBGI,child#004_predict,0.41957165595511786
+HBGI,adolescent#002_predict,0.7026991224449978
+HBGI,adult#007_predict,0.8383571121338852
+HBGI,adult#008_predict,1.0301601848987143
+HBGI,child#006_predict,0.3808110026343712
+HBGI,child#009_predict,0.39813690238179306
+Risk Index,child#005_predict,21.941487559984868
+Risk Index,adolescent#001_predict,4.977210607168757
+Risk Index,adult#004_predict,6.461197834811022
+Risk Index,child#008_predict,38.32907218359082
+Risk Index,child#007_predict,7.825975303569803
+Risk Index,adult#009_predict,2.4013815340611733
+Risk Index,adult#006_predict,21.89013431059249
+Risk Index,adolescent#003_predict,8.978614296197286
+Risk Index,adolescent#005_predict,18.49390295112083
+Risk Index,adult#010_predict,21.161545783011995
+Risk Index,child#001_predict,22.44684899922426
+Risk Index,adult#002_predict,11.086321309090366
+Risk Index,adolescent#008_predict,15.98937875577345
+Risk Index,adolescent#007_predict,2.9775658433204804
+Risk Index,child#003_predict,39.0146923242281
+Risk Index,child#010_predict,3.389614633080889
+Risk Index,adult#001_predict,4.2905538664029255
+Risk Index,adolescent#004_predict,15.891095996701534
+Risk Index,child#002_predict,14.626944509076013
+Risk Index,adolescent#006_predict,3.158521850782187
+Risk Index,adolescent#009_predict,36.84501081684113
+Risk Index,adult#003_predict,17.952350964831357
+Risk Index,adult#005_predict,5.956718939235171
+Risk Index,adolescent#010_predict,1.9576496984694567
+Risk Index,child#004_predict,22.205634707081852
+Risk Index,adolescent#002_predict,38.30186531920537
+Risk Index,adult#007_predict,6.5426401025990195
+Risk Index,adult#008_predict,3.4292452195846828
+Risk Index,child#006_predict,9.87320514809673
+Risk Index,child#009_predict,13.85239788346924

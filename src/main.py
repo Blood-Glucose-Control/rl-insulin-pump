@@ -85,7 +85,7 @@ def main():
         elif mode == "analyze":
             sg_analyze(
                 f"{cfg.get('run_directory', None)}/results/predict/",
-                f"{cfg.get('run_directory', None)}/results/analysis/",
+                f"{cfg.get('run_directory', None)}/results/plots/",
             )
         else:
             logger.error(

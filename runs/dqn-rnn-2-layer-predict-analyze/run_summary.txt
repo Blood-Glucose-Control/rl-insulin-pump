@@ -1,0 +1,26 @@
+Training Run: dqn-rnn-2-layer-predict-analyze
+Created: Thu Nov  6 02:39:07 PM UTC 2025
+Configuration: dqn-configs-paper-rnn.yaml
+Original config: ./configs/dqn-configs-paper-rnn.yaml
+
+SLURM Settings:
+- Time limit: 06:00:00
+- Memory: 8G
+- CPUs: 4
+- GPU: gpu:1
+- Partition: HI
+
+Directory Structure:
+- Run directory: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze
+- Logs: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/logs/
+- Checkpoints: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/checkpoints/
+- TensorBoard: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/tensorboard/
+- Results: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/results/
+- SLURM logs: /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/slurm/
+
+To monitor the job:
+- squeue -u y329xie
+- tail -f /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/slurm/slurm-*.out
+
+To view TensorBoard:
+- tensorboard --logdir /u201/y329xie/rl-insulin-pump/runs/dqn-rnn-2-layer-predict-analyze/tensorboard/
