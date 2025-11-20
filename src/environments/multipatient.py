@@ -157,6 +157,9 @@ class MultiPatientEnv(Wrapper):
             truncated: Whether the episode was truncated (e.g., max steps)
             info: Additional information
         """
+
+        # Want to keep previous observation steps, and combine into higher dimensional
+        # observation for use by CNN/LSTM: model will get longer 'memory'
         observation, reward, terminated, truncated, info = self.env.step(action)
 
         # Increment step counter for the current patient

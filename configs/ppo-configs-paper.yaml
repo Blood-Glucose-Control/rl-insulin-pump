@@ -1,0 +1,35 @@
+env:
+  id: "simglucose/multi-patient-v0"
+  entry_point: "simglucose.envs:T1DSimGymnaisumEnv"
+  max_episode_steps: 1000
+  patient_name: "all"  # Use all available patients, can also be a list of patient names or a single patient name
+  discrete_action_space: False
+  discrete_observation_space: False
+  discrete_action_step: 0.1
+  discrete_observation_step: 0.1
+seed: 42
+model_name: "PPO"
+action_noise:
+  mean: 0
+  sigma: 0.25
+model:
+  policy: "MlpPolicy"
+  learning_rate: 0.00001
+  buffer_size: 100000
+  batch_size: 256
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+training:
+  checkpoint_freq: 10000
+  total_timesteps: 4800000
+eval:
+  eval_freq: 5000
+  n_eval_episodes: 5
+predict:
+  prefix: "adolescent#002"
+device: "cuda"
+mode:
+- predict
+- analyze
+model_save_path: "/u201/y329xie/rl-insulin-pump/runs/ppo-paper/best_model/best_model"

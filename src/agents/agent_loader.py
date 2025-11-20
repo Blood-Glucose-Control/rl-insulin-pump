@@ -28,24 +28,38 @@ def make_model(cfg: Config, env, network_config=None):
         #  "discrete_action_space": model_config.get("discrete_action_space", False), "discrete_observation_space": model_config.get("discrete_observation_space", False)}
     )
 
-    model_kwargs = {
-        "policy": cfg.model.policy,  # TODO: make this configurable see: https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html
-        "env": env,
-        "action_noise": action_noise,
-        "verbose": 1,
-        "device": cfg.device,
-        "learning_rate": cfg.model.learning_rate,
-        "buffer_size": cfg.model.buffer_size,
-        "batch_size": cfg.model.batch_size,
-        "gamma": cfg.model.gamma,
-        "tensorboard_log": cfg.tensorboard_log_path,
-        "policy_kwargs": policy_kwargs,
-    }
+    
 
     match cfg.model_name:
         case "DDPG":
+            model_kwargs = {
+                "policy": cfg.model.policy,
+                "env": env,
+                "action_noise": action_noise,
+                "verbose": 1,
+                "device": cfg.device,
+                "learning_rate": cfg.model.learning_rate,
+                "buffer_size": cfg.model.buffer_size,
+                "batch_size": cfg.model.batch_size,
+                "gamma": cfg.model.gamma,
+                "tensorboard_log": cfg.tensorboard_log_path,
+                "policy_kwargs": policy_kwargs,
+            }
             return DDPG(**model_kwargs)
         case "PPO":
+            model_kwargs = {
+                "policy": cfg.model.policy,
+                "env": env,
+                "verbose": 1,
+                "device": cfg.device,
+                "learning_rate": model_config.learning_rate,
+                "batch_size": model_config.batch_size,
+                "gamma": model_config.gamma,
+                "gae_lambda": model_config.gae_lambda,
+                "clip_range": model_config.clip_range,
+                "tensorboard_log": cfg["run_directory"] + "/tensorboard/",
+                "policy_kwargs": policy_kwargs,
+            }
             return PPO(**model_kwargs)
         case "DQN":
             model_kwargs = {

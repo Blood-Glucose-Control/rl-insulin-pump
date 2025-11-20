@@ -1,0 +1,36 @@
+action_noise:
+  mean: 0
+  sigma: 0.25
+device: cuda
+env:
+  discrete_action_space: false
+  discrete_action_step: 0.1
+  discrete_observation_space: false
+  discrete_observation_step: 0.1
+  entry_point: simglucose.envs:T1DSimGymnaisumEnv
+  id: simglucose/multi-patient-v0
+  max_episode_steps: 1000
+  patient_name: all
+eval:
+  eval_freq: 5000
+  n_eval_episodes: 5
+mode:
+- predict
+- analyze
+model:
+  batch_size: 256
+  buffer_size: 100000
+  clip_range: 0.2
+  gae_lambda: 0.95
+  gamma: 0.99
+  learning_rate: 1.0e-05
+  policy: MlpPolicy
+model_name: PPO
+model_save_path: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/best_model/best_model
+predict:
+  prefix: adolescent#002
+run_directory: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze
+seed: 42
+training:
+  checkpoint_freq: 10000
+  total_timesteps: 4800000

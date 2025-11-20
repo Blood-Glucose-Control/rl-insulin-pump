@@ -19,7 +19,7 @@ except ImportError:
         """
         return _Step(observation, reward, done, kwargs)
 
-
+# change this to include more fields
 Observation = namedtuple("Observation", ["CGM"])
 logger = logging.getLogger(__name__)
 

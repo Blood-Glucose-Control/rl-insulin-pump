@@ -1,0 +1,26 @@
+Training Run: ppo-paper
+Created: Wed Nov 19 11:01:32 PM UTC 2025
+Configuration: ppo-configs-paper.yaml
+Original config: ./configs/ppo-configs-paper.yaml
+
+SLURM Settings:
+- Time limit: 06:00:00
+- Memory: 8G
+- CPUs: 4
+- GPU: gpu:1
+- Partition: HI
+
+Directory Structure:
+- Run directory: /u201/y329xie/rl-insulin-pump/runs/ppo-paper
+- Logs: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/logs/
+- Checkpoints: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/checkpoints/
+- TensorBoard: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/tensorboard/
+- Results: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/results/
+- SLURM logs: /u201/y329xie/rl-insulin-pump/runs/ppo-paper/slurm/
+
+To monitor the job:
+- squeue -u y329xie
+- tail -f /u201/y329xie/rl-insulin-pump/runs/ppo-paper/slurm/slurm-*.out
+
+To view TensorBoard:
+- tensorboard --logdir /u201/y329xie/rl-insulin-pump/runs/ppo-paper/tensorboard/

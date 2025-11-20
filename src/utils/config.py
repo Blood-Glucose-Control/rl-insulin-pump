@@ -45,6 +45,8 @@ class ModelConfig:
         self.buffer_size = data.get("buffer_size", 100000)
         self.batch_size = data.get("batch_size", 256)
         self.gamma = data.get("gamma", 0.99)
+        self.gae_lambda = data.get("gae_lambda", 0.95)
+        self.clip_range = data.get("clip_range", 0.2)
 
 
 class TrainingConfig:

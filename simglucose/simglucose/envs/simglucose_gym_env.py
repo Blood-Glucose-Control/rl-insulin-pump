@@ -175,6 +175,8 @@ class T1DSimGymnaisumEnv(gymnasium.Env):
         truncated = False
         if self.discrete_observation_space:
             return int(obs.CGM*10), reward, done, truncated, info
+
+        # here: 
         return np.array([obs.CGM], dtype=np.float32), reward, done, truncated, info
 
     def reset(self, seed=None, options=None):

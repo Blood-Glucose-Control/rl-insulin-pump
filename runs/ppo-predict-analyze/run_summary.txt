@@ -1,0 +1,26 @@
+Training Run: ppo-predict-analyze
+Created: Thu Nov 20 03:24:40 PM UTC 2025
+Configuration: ppo-configs-paper.yaml
+Original config: ./configs/ppo-configs-paper.yaml
+
+SLURM Settings:
+- Time limit: 06:00:00
+- Memory: 8G
+- CPUs: 4
+- GPU: gpu:1
+- Partition: HI
+
+Directory Structure:
+- Run directory: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze
+- Logs: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/logs/
+- Checkpoints: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/checkpoints/
+- TensorBoard: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/tensorboard/
+- Results: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/results/
+- SLURM logs: /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/slurm/
+
+To monitor the job:
+- squeue -u y329xie
+- tail -f /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/slurm/slurm-*.out
+
+To view TensorBoard:
+- tensorboard --logdir /u201/y329xie/rl-insulin-pump/runs/ppo-predict-analyze/tensorboard/
